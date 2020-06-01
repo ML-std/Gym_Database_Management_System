@@ -57,7 +57,7 @@ public class DatabaseConnector {
     }
 
     //Method for getting data from database where condition is like "CID = 300001"
-    //This method gets the first person that is in the condition.
+    //This method gets the first item that is in the condition.
     protected List<Object[]> getDatabaseItem(String tableName,String condition){
         // List that stores String arrays as a List
         List<Object[]> arrayList = new ArrayList<>();
@@ -95,9 +95,6 @@ public class DatabaseConnector {
             preparedStmt.setString   (1, newValue);
         preparedStmt.executeUpdate();
 
-       // Statement stmt=conn.createStatement();
-     //  int rs=stmt.executeUpdate("UPDATE " + tableName + " SET " + columnName + " = " + newValue +" WHERE " + condition);
-            //     System.out.println(rs);
     }
     catch (Exception e){
         System.out.println(e.getMessage());
@@ -165,16 +162,14 @@ public class DatabaseConnector {
     }
     //Fills the list for the getter methods
     private void fillList(ResultSet rs, List<Object[]> arrayList ,boolean isAList){
-      try{  ResultSetMetaData metaData=  rs.getMetaData();
-        //System.out.println(metaData.getTableName(1) + " Table");
+      try{
+          ResultSetMetaData metaData=  rs.getMetaData();
         int columnCount = metaData.getColumnCount();
         Object[] tempArray = new Object[columnCount];
         for (int i =1;i<=columnCount;i++){
             tempArray[i-1] = metaData.getColumnName(i);
-            //  System.out.print(metaData.getColumnName(i) + " ");
         }
         arrayList.add(tempArray);
-        // System.out.println();
         int i = 0;
           boolean hasElement;
           do {
@@ -193,15 +188,12 @@ public class DatabaseConnector {
                     //Although these are same with default, default is meant to be as ENUM type
                     //Unfortunately, there are no SQL enum types in JAVA.
                     case "VARCHAR":
-                        // System.out.print(rs.getString(j) + " ");
                         tmpArray[j-1] = rs.getString(j);
                         break;
                     case "DATE":
-                        //System.out.print(rs.getDate(j) + " ");
                         tmpArray[j-1] = rs.getDate(j);
                         break;
                     default:
-                        //System.out.print(rs.getString(j) + " ");
                         tmpArray[j-1] = rs.getString(j);
                         break;
                 }
