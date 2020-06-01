@@ -1,22 +1,25 @@
 import java.sql.Date;
 
 public class Customer {
-    private String firstName, middleName, lastName, address;
+    private String firstName, middleName, lastName, address, employeeID;
     private int SSN, customerID;
     private String[] phoneNumber;
     private Date birthDate;
+    private Sex sex;
 
     //Constructor for customer
 
-    public Customer(String firstName, String middleName, String lastName, String address, int SSN, int customerID, String[] phoneNumber, Date birthDate) {
+    public Customer(String firstName, String middleName, String lastName,Sex sex, String address, int SSN, int customerID, String[] phoneNumber, Date birthDate, String employeeID) {
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
+        this.sex = sex;
         this.address = address;
         this.SSN = SSN;
         this.customerID = customerID;
         this.phoneNumber = phoneNumber;
         this.birthDate = birthDate;
+        this.employeeID = employeeID;
     }
 
     //Getter and setter methods for customer
@@ -82,5 +85,13 @@ public class Customer {
 
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public Sex getSex() {
+        return sex;
+    }
+
+    public void setSex(Sex sex) {
+        this.sex = sex;
     }
 }

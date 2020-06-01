@@ -1,3 +1,5 @@
+import java.sql.Statement;
+
 public class Receptionist extends Employee {
    private int weeklySalary;
    //constructor for receptionist
@@ -32,8 +34,9 @@ public class Receptionist extends Employee {
         return true;
     }
 
-    public static void getCustomer(){
-
+    public static void getCustomers(){
+    }
+    public static void getCustomerByID(){
     }
 
     //Methods for modifying customer reports
@@ -50,10 +53,10 @@ public class Receptionist extends Employee {
         return true;
     }
 
-    public static void getCustomerReport(){
-
+    public static void getCustomerReports(){
     }
-
+    public static void getCustomerReportByID(){
+    }
     //Methods for modifying facilities used by customers
 
     protected boolean addCustomerToFacility(){
@@ -82,7 +85,6 @@ public class Receptionist extends Employee {
         return true;
     }
     public static void getTrainerReview(){
-
     }
 
     protected boolean addFacilityReview(){
@@ -94,10 +96,12 @@ public class Receptionist extends Employee {
     protected boolean removeFacilityReview(){
         return true;
     }
-
-    public static void getFacilityReview(){
+    public static void getFacilityReviews() {
+    }
+    public static void getFacilityReviewByID(){
 
     }
+
 
 
     //Getter and setter method for receptionist
