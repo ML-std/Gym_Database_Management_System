@@ -1,3 +1,5 @@
+import org.omg.PortableInterceptor.ObjectReferenceFactory;
+
 import javax.swing.*;
 import java.sql.*;
 import java.util.*;
@@ -22,13 +24,72 @@ public class DatabaseConnector {
         try {
             Statement stmt=conn.createStatement();
             ResultSet rs=stmt.executeQuery("SELECT * FROM " +  tableName);
-            fillList(rs,arrayList,true);}
+            fillList(rs,arrayList,true, true);}
         catch (Exception e){
             System.out.println(e.getMessage());
             return null;
         }
         return arrayList;
     }
+    // gets selected rows items with condition
+    protected Object[] getDatabaseList(String selectedRow, String tableName,String condition){
+        // List that stores String arrays as a List
+        List<Object[]> arrayList = new ArrayList<>();
+        String conditionName, conditionValue;
+        StringTokenizer stringTokenizer = new StringTokenizer(condition, " =");
+        conditionName = stringTokenizer.nextToken();
+        conditionValue =" = " + "\"" + stringTokenizer.nextToken() + "\"";
+
+        try {
+            Statement stmt=conn.createStatement();
+            String query ="SELECT " + selectedRow+ " FROM " + tableName+ " where " + conditionName + conditionValue ;
+            ResultSet rs=stmt.executeQuery(query);
+            fillList(rs,arrayList,true,false);
+
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+        //Object[] o = new Object[arrayList.size()];
+        for (int i = 0; i<arrayList.size(); i++){
+          //  o[i] = arrayList.get(0);
+        }
+
+
+        return arrayList.get(0);
+
+    }
+
+
+    //it gets selected rows items without condition
+    protected ArrayList<Object> getDatabaseRowList(String selectedRow, String tableName){
+        // List that stores String arrays as a List
+        List<Object[]> arrayList = new ArrayList<>();
+
+
+        try {
+            Statement stmt=conn.createStatement();
+            String query ="SELECT " + selectedRow+ " FROM " + tableName ;
+            ResultSet rs=stmt.executeQuery(query);
+            fillList(rs,arrayList,true,false);
+
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+        ArrayList<Object> objectList =  new ArrayList<>();
+       // Object[] o =  new Object[arrayList.size()];
+        for (int i = 0; i < arrayList.size(); i++){
+           // o[i] = arrayList.get(i)[0];
+            objectList.add(arrayList.get(i)[0]);
+        }
+
+        return objectList;
+
+    }
+
 
     //Method for getting list of objects in given condition
     protected List<Object[]> getDatabaseList(String tableName,String condition){
@@ -43,7 +104,7 @@ public class DatabaseConnector {
             Statement stmt=conn.createStatement();
             String query ="SELECT * FROM " + tableName+ " where " + conditionName + conditionValue ;
             ResultSet rs=stmt.executeQuery(query);
-            fillList(rs,arrayList,true);
+            fillList(rs,arrayList,true,false);
 
         }
         catch (Exception e){
@@ -58,7 +119,7 @@ public class DatabaseConnector {
 
     //Method for getting data from database where condition is like "CID = 300001"
     //This method gets the first item that is in the condition.
-    protected List<Object[]> getDatabaseItem(String tableName,String condition){
+    protected Object[] getDatabaseItem(String tableName,String condition){
         // List that stores String arrays as a List
         List<Object[]> arrayList = new ArrayList<>();
         String conditionName, conditionValue;
@@ -71,14 +132,13 @@ public class DatabaseConnector {
             String query ="SELECT * FROM " + tableName+ " where " + conditionName + conditionValue ;
             ResultSet rs=stmt.executeQuery(query);
             rs.next();
-            fillList(rs,arrayList,false);
+            fillList(rs,arrayList,false,false);
         }
         catch (Exception e){
             System.out.println(e.getMessage());
             return null;
         }
-
-        return arrayList;
+        return arrayList.get(0);
 
     }
 
@@ -127,9 +187,7 @@ public class DatabaseConnector {
                 }
                 else
                     valueString.append(valueObjects[i].toString()).append(")");            }
-
-
-            String query = " insert into " + tableName + " (" +tableColumnNames +" "  + "" + valueString + "" + ";";
+            String query = " insert into " + tableName + " (" +tableColumnNames +" " + valueString + "" + ";";
             PreparedStatement preparedStmt = conn.prepareStatement(query);
             preparedStmt.executeUpdate();
 
@@ -161,47 +219,45 @@ public class DatabaseConnector {
         return isDeleted;
     }
     //Fills the list for the getter methods
-    private void fillList(ResultSet rs, List<Object[]> arrayList ,boolean isAList){
+    private void fillList(ResultSet rs, List<Object[]> arrayList , boolean isAList, boolean hasMetaData ){
       try{
           ResultSetMetaData metaData=  rs.getMetaData();
         int columnCount = metaData.getColumnCount();
         Object[] tempArray = new Object[columnCount];
+        if (isAList&&hasMetaData){
         for (int i =1;i<=columnCount;i++){
             tempArray[i-1] = metaData.getColumnName(i);
         }
-        arrayList.add(tempArray);
-        int i = 0;
-          boolean hasElement;
-          do {
+        arrayList.add(tempArray);}
+          while (rs.next()) {
 
-              hasElement = rs.next();
-              if (rs.isLast()){
-                  hasElement = false;
-              }
             Object[] tmpArray = new Object[columnCount];
             for (int j =1;j<=columnCount;j++){
-                switch (metaData.getColumnTypeName(j)) {
-                    case "INT":
-                        //  System.out.print(rs.getInt(j) + " ");
-                        tmpArray[j-1] = rs.getInt(j);
-                        break;
-                    //Although these are same with default, default is meant to be as ENUM type
-                    //Unfortunately, there are no SQL enum types in JAVA.
-                    case "VARCHAR":
-                        tmpArray[j-1] = rs.getString(j);
-                        break;
-                    case "DATE":
-                        tmpArray[j-1] = rs.getDate(j);
-                        break;
-                    default:
-                        tmpArray[j-1] = rs.getString(j);
-                        break;
-                }
+                    switch (metaData.getColumnTypeName(j)) {
+                        case "INT":
+                            tmpArray[j-1] = rs.getInt(j);
+                            break;
+                        //Although these are same with default, default is meant to be as ENUM type
+                        //Unfortunately, there are no SQL enum types in JAVA.
+                        case "VARCHAR":
+                            tmpArray[j-1] = rs.getString(j);
+                            break;
+                        case "DATE":
+                            tmpArray[j-1] = rs.getDate(j);
+                            break;
+                        default:
+                            tmpArray[j-1] = rs.getString(j);
+                            break;
+                    }
 
             }
+
             arrayList.add(tmpArray);
+            if (!isAList){
+                break;
+            }
         }
-        while (hasElement&&isAList);
+
       }
       catch (SQLException e){
           System.out.println(e.getMessage());
@@ -210,18 +266,19 @@ public class DatabaseConnector {
     //Examples for if these works
     public static void main(String[] args) {
         DatabaseConnector databaseConnector = new DatabaseConnector();
+
         List<Object[]> o =   databaseConnector.getDatabaseTable("customer");
         for (Object[] objects : o) {
             System.out.println(Arrays.toString(objects));
         }
-        List<Object[]> o2 = databaseConnector.getDatabaseList("customer", " Middle_Name = M");
-        for (Object[] objects : o2) {
-            System.out.println(Arrays.toString(objects));
+        ArrayList<Object> o2 = databaseConnector.getDatabaseRowList("CID", "customer");
+        for (Object objects : o2) {
+            System.out.println(objects.toString());
         }
-        List<Object[]> o3 = databaseConnector.getDatabaseItem("customer", " Middle_Name = M ");
-        for (Object[] objects : o3) {
-            System.out.println(Arrays.toString(objects));
-        }
+        System.out.println();
+        Object[] o3 = databaseConnector.getDatabaseItem("customer", " Middle_Name = M ");
+        for (Object value : o3) System.out.print(value.toString() + " ");
+        }/*
        databaseConnector.removeDataFromDatabase("customer", "First_Name = davai");
         o = databaseConnector.getDatabaseTable("customer");
         for (Object[] objects : o) {
@@ -239,5 +296,4 @@ public class DatabaseConnector {
         }*/
     }
 
-}
 

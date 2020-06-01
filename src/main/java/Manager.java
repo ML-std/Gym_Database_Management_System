@@ -62,4 +62,8 @@ public class Manager extends Employee{
         this.monthlySalary = monthlySalary;
     }
 
+    @Override
+    public boolean employeeLogin(int employeeID, String password) {
+        return false;
+    }
 }
