@@ -32,14 +32,11 @@ public class DatabaseConnector {
     protected ArrayList<Object> getDatabaseRowList(String selectedRow, String tableName, String condition){
         // List that stores String arrays as a List
         List<Object[]> arrayList = new ArrayList<>();
-        String conditionName, conditionValue;
-        StringTokenizer stringTokenizer = new StringTokenizer(condition, " =");
-        conditionName = stringTokenizer.nextToken();
-        conditionValue =" = " + "\"" + stringTokenizer.nextToken() + "\"";
+        String queryString = conditionRegulator(condition);
 
         try {
             Statement stmt=conn.createStatement();
-            String query ="SELECT " + selectedRow+ " FROM " + tableName+ " where " + conditionName + conditionValue ;
+            String query ="SELECT " + selectedRow+ " FROM " + tableName+ " where " + queryString ;
             ResultSet rs=stmt.executeQuery(query);
             fillList(rs,arrayList,true,false);
 
@@ -92,14 +89,11 @@ public class DatabaseConnector {
     protected List<Object[]> getDatabaseList(String tableName,String condition){
         // List that stores String arrays as a List
         List<Object[]> arrayList = new ArrayList<>();
-        String conditionName, conditionValue;
-        StringTokenizer stringTokenizer = new StringTokenizer(condition, " =");
-        conditionName = stringTokenizer.nextToken();
-        conditionValue =" = " + "\"" + stringTokenizer.nextToken() + "\"";
+        String queryString = conditionRegulator(condition);
 
         try {
             Statement stmt=conn.createStatement();
-            String query ="SELECT * FROM " + tableName+ " where " + conditionName + conditionValue ;
+            String query ="SELECT * FROM " + tableName+ " where " + queryString ;
             ResultSet rs=stmt.executeQuery(query);
             fillList(rs,arrayList,true,false);
 
@@ -119,14 +113,11 @@ public class DatabaseConnector {
     protected ArrayList<Object> getDatabaseItem(String tableName,String condition){
         // List that stores String arrays as a List
         List<Object[]> arrayList = new ArrayList<>();
-        String conditionName, conditionValue;
-        StringTokenizer stringTokenizer = new StringTokenizer(condition, " =");
-        conditionName = stringTokenizer.nextToken();
-        conditionValue =" = " + "\"" + stringTokenizer.nextToken() + "\"";
+        String queryString = conditionRegulator(condition);
 
         try {
             Statement stmt=conn.createStatement();
-            String query ="SELECT * FROM " + tableName+ " where " + conditionName + conditionValue ;
+            String query ="SELECT * FROM " + tableName+ " where " + queryString;
             ResultSet rs=stmt.executeQuery(query);
             rs.next();
             fillList(rs,arrayList,false,false);
@@ -142,12 +133,9 @@ public class DatabaseConnector {
 
     //Method for setting data to database where condition is like "CID = 300001"
     protected boolean setDataToDatabase(String tableName, String columnName, String newValue, String condition){
-        String conditionName, conditionValue;
-        StringTokenizer stringTokenizer = new StringTokenizer(condition, " =");
-        conditionName = stringTokenizer.nextToken();
-        conditionValue =" = " + "\"" + stringTokenizer.nextToken() + "\"";
+        String queryString = conditionRegulator(condition);
         try {
-            String query = "update " + tableName + " set "+ columnName + " = ? where " + conditionName + conditionValue ;
+            String query = "update " + tableName + " set "+ columnName + " = ? where " +queryString ;
             PreparedStatement preparedStmt = conn.prepareStatement(query);
             preparedStmt.setString   (1, newValue);
         preparedStmt.executeUpdate();
@@ -198,30 +186,23 @@ public class DatabaseConnector {
     }
     //Method that deletes data from database
     protected boolean removeDataFromDatabase(String tableName, String condition){
-        String conditionName, conditionValue, conditionName2 ,conditionValue2 = "";
-        StringTokenizer stringTokenizer = new StringTokenizer(condition, " =");
-        conditionName = stringTokenizer.nextToken();
-        conditionValue =" = " + "\"" + stringTokenizer.nextToken() + "\"";
-        System.out.println( conditionValue);
-        while (stringTokenizer.hasMoreTokens()) {
-            System.out.println(stringTokenizer.nextToken());
-            StringTokenizer tmpTokenizer = new StringTokenizer(stringTokenizer.nextToken(),"");
-                conditionName2 = tmpTokenizer.nextToken();
-                conditionValue2 =" = " + "\"" + tmpTokenizer.nextToken() + "\"";
-             System.out.println();
-        }
-       // System.out.println( "DELETE FROM " + tableName + " WHERE " + conditionName + conditionValue);
+       String queryString = conditionRegulator(condition);
+
         try {
-            Object o = getDatabaseList(tableName,condition);
-            System.out.println(o.toString());
+            String normalString = queryString + "";
+            System.out.println(normalString);
+            Object o = getDatabaseList(tableName,normalString,true);
+
             if (!(o.toString().equals("[]"))){
-            String query = "DELETE FROM " + tableName + " WHERE " + conditionName + conditionValue;
-                System.out.println(query);
+            String query = "DELETE FROM " + tableName + " WHERE " + queryString;
+                System.out.println(1111);
             Statement stmt = conn.createStatement();
             stmt.execute(query);
             return true;
         }
-            else return false;
+            else
+                System.out.println("data is not valid ");
+                return false;
         }
         catch (SQLException e){
             System.out.println(e.getMessage());
@@ -277,6 +258,68 @@ public class DatabaseConnector {
           System.out.println(e.getMessage());
       }
     }
+    private String conditionRegulator(String condition){
+        String conditionName = "", conditionValue = "";
+        StringBuilder queryString = new StringBuilder();
+        if (condition.contains("AND")){
+            String[] strings = condition.split("AND");
+            for (int i = 0; i < strings.length;i++) {
+                String s = strings[i];
+                StringTokenizer stringTokenizer = new StringTokenizer(s, " =");
+                conditionName =  stringTokenizer.nextToken();
+                conditionValue =" = " + "\"" + stringTokenizer.nextToken() + "\"";
+                if (i==strings.length-1)
+                    queryString.append(conditionName).append(conditionValue);
+                else{
+                    queryString.append(conditionName).append(conditionValue).append(" AND ");
+                }
+            }
+
+            System.out.println(queryString);
+        }
+        else if (condition.contains("OR")){
+            String[] strings = condition.split("OR");
+            for (int i = 0; i < strings.length;i++) {
+                String s = strings[i];
+                StringTokenizer stringTokenizer = new StringTokenizer(s, " =");
+                conditionName =  stringTokenizer.nextToken();
+                conditionValue =" = " + "\"" + stringTokenizer.nextToken() + "\"";
+                if (i==strings.length-1)
+                    queryString.append(conditionName).append(conditionValue);
+                else{
+                    queryString.append(conditionName).append(conditionValue).append(" OR ");
+                }
+            }
+
+            System.out.println(queryString);
+        }
+        else {
+
+            StringTokenizer stringTokenizer = new StringTokenizer(condition, " =");
+            conditionName = stringTokenizer.nextToken();
+            conditionValue =" = " + "\"" + stringTokenizer.nextToken() + "\"";
+            queryString.append(conditionName).append(conditionValue);
+        }
+        return (queryString + "");
+    }
+    private List<Object[]> getDatabaseList(String tableName,String condition,boolean isRegularCondition){
+        // List that stores String arrays as a List
+        List<Object[]> arrayList = new ArrayList<>();
+        try {
+            Statement stmt=conn.createStatement();
+            String query ="SELECT * FROM " + tableName+ " where " + condition ;
+            ResultSet rs=stmt.executeQuery(query);
+            fillList(rs,arrayList,true,false);
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+
+
+        return arrayList;
+
+    }
 
     //Examples for if these works
     public static void main(String[] args) {
@@ -327,7 +370,7 @@ public class DatabaseConnector {
         System.out.println();
         System.out.println("<<Removing a data from database>>");
         System.out.println();
-       databaseConnector.removeDataFromDatabase("customer", "Middle_Name = B");
+       databaseConnector.removeDataFromDatabase("customer", "Middle_Name = O");
         o = databaseConnector.getDatabaseTable("customer");
         for (Object[] objects : o) {
             System.out.println(Arrays.toString(objects));

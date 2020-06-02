@@ -1,3 +1,5 @@
+import com.sun.org.apache.bcel.internal.generic.Select;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,8 +52,19 @@ public class Trainer extends Employee{
        // System.out.println("CID = " + customerID + " AND" + " Batch_ID = " + batchID );
         return connector.removeDataFromDatabase("attends","CID = " + customerID + " AND " + "Batch_ID = " + batchID );
     }
-    public static void getAttendance(){
-        return;
+    public List<Object[]> getAttendanceTable(){
+        return connector.getDatabaseTable("attends");
+    }
+    public List<Object> getAttendance(int customerOrBatchID,boolean isCustomer){
+        String selectedRow;
+        if (isCustomer){
+          selectedRow  = "Batch_ID";
+            return connector.getDatabaseRowList(selectedRow,"attends", "CID = " + customerOrBatchID);
+        }
+        else {
+            selectedRow = "CID";
+            return connector.getDatabaseRowList(selectedRow,"attends", "Batch_ID = " + customerOrBatchID);
+        }
     }
 
     //Getter and setter method for trainer
@@ -68,7 +81,7 @@ public class Trainer extends Employee{
      //   ArrayList<Object> e = tmp2.connector.getDatabaseRowList("Employee_ID","manager");
       //  System.out.println(tmp2.createBatch(100344,"12:30:00","12:40:00","strength",100001, tmp2.getEmployeeID()));
       //  System.out.println(tmp2.rearrangeBatch(100341,"12:40:00","13:30:00"));
-        System.out.println(tmp2.removeBatch(100110));
+      /*  System.out.println(tmp2.removeBatch(100110));
       List<Object> arrayList = tmp2.getBatch(100111);
         for (Object objects : arrayList) {
             System.out.println(objects.toString());
@@ -76,9 +89,13 @@ public class Trainer extends Employee{
         List<Object[]> arrayList2 = tmp2.getBatchesTable();
         for (Object[] objects : arrayList2) {
             System.out.println(Arrays.toString(objects));
+        }*/
+        System.out.println( tmp2.includeCustomer(300001,500005));
+      System.out.println( tmp2.excludeCustomer(300002,500003));
+        List<Object> arrayList = tmp2.getAttendance(500004,true);
+        for (Object objects : arrayList) {
+            System.out.println(objects.toString());
         }
-       // System.out.println( tmp2.includeCustomer(300001,500003));
-      System.out.println( tmp2.excludeCustomer(300001,500001));
     }
 
   }
