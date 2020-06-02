@@ -1,16 +1,14 @@
-import javafx.scene.layout.BorderPane;
 
-import javax.swing.*;
 import java.util.ArrayList;
 
-public abstract class Employee  {
+public  class Employee  {
     private String firstName, middleName, lastName, address, password;
-    private int SSN, employeeID;
+    private int SSN, employeeID, branchID;
     private String[] phoneNumber;
     DatabaseConnector connector = new DatabaseConnector();
 
     //Constructor of Employee
-    public Employee(String firstName, String middleName, String lastName, String address,String password, int SSN, int employeeID, String[] phoneNumber ) {
+    public Employee(String firstName, String middleName, String lastName, String address,String password, int SSN, int employeeID, int branchID, String[] phoneNumber ) {
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
@@ -19,6 +17,7 @@ public abstract class Employee  {
         this.employeeID = employeeID;
         this.phoneNumber = phoneNumber;
         this.password = password;
+        this.branchID = branchID;
     }
 
 
@@ -151,6 +150,13 @@ public abstract class Employee  {
 
     public void setEmployeeID(int employeeID) {
         this.employeeID = employeeID;
+    }
+    public int getBranchID() {
+        return branchID;
+    }
+
+    public void setBranchIDID(int branchID) {
+        this.branchID = branchID;
     }
 
     public String[] getPhoneNumber() {

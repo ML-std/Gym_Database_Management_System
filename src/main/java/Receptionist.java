@@ -6,8 +6,8 @@ public class Receptionist extends Employee {
 
    DatabaseConnector connector;
    //constructor for receptionist
-    public Receptionist(String firstName, String middleName, String lastName, String address, String password, int SSN, int employeeID, String[] phoneNumber, int weeklySalary) {
-        super(firstName, middleName, lastName, address, password, SSN, employeeID, phoneNumber);
+    public Receptionist(String firstName, String middleName, String lastName, String address, String password, int SSN, int employeeID,int branchID,  String[] phoneNumber, int weeklySalary) {
+        super(firstName, middleName, lastName, address, password, SSN, employeeID,branchID, phoneNumber);
         this.weeklySalary = weeklySalary;
     }
 

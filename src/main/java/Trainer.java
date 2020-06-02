@@ -10,8 +10,8 @@ public class Trainer extends Employee{
     DatabaseConnector connector;
 
     //Constructor for trainer
-    public Trainer(String firstName, String middleName, String lastName, String address, String  password,  int SSN, int employeeID, String[] phoneNumber, int hourlySalary) {
-        super(firstName, middleName, lastName, address, password, SSN, employeeID, phoneNumber);
+    public Trainer(String firstName, String middleName, String lastName, String address, String  password,  int SSN, int employeeID,int branchID,  String[] phoneNumber, int hourlySalary) {
+        super(firstName, middleName, lastName, address, password, SSN, employeeID, branchID, phoneNumber);
         this.hourlySalary = hourlySalary;
         connector = new DatabaseConnector();
     }
@@ -89,13 +89,18 @@ public class Trainer extends Employee{
         List<Object[]> arrayList2 = tmp2.getBatchesTable();
         for (Object[] objects : arrayList2) {
             System.out.println(Arrays.toString(objects));
-        }*/
+        }*//*
         System.out.println( tmp2.includeCustomer(300001,500005));
       System.out.println( tmp2.excludeCustomer(300002,500003));
         List<Object> arrayList = tmp2.getAttendance(500004,true);
         for (Object objects : arrayList) {
             System.out.println(objects.toString());
-        }
+        }*/
+        //String firstName, String middleName, String lastName, String address,String password, int SSN, int employeeID, int branchID, String[] phoneNumber
+        Manager manager = new Manager(200001);
+      //  Employee employee = new Employee("hiyar","eşek","omg","lololol","202020",15696857,19093939,100001,new String[]{"534-239-212"});
+        //manager.hireEmployee(employee);
+       // System.out.println(manager.dismissEmployee(19093939));
     }
 
   }
