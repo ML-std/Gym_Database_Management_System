@@ -2,10 +2,12 @@ import java.util.List;
 
 public class Manager extends Employee{
     private int monthlySalary;
+    private DatabaseConnector connector;
     //Constructor for manager
-    public Manager(String firstName, String middleName, String lastName, String address, String password, int SSN, int employeeID, int branchID, String[] phoneNumber, int monthlySalary) {
-        super(firstName, middleName, lastName, address, password, SSN, employeeID, branchID, phoneNumber);
+    public Manager(String firstName, String middleName, String lastName, String address, String password, int SSN, int employeeID, int branchID, String[] phoneNumbers, int monthlySalary) {
+        super(firstName, middleName, lastName, address, password, SSN, employeeID, branchID, phoneNumbers);
         this.monthlySalary = monthlySalary;
+        connector = new DatabaseConnector();
     }
 
 
@@ -16,52 +18,53 @@ public class Manager extends Employee{
     }
 
     //Methods for modifying employees
-    protected List<Object[]> getEmployeeTable(){
+    public List<Object[]> getEmployeeTable(){
         return connector.getDatabaseTable("employee");
     }
-    protected List<Object> getEmployee(int EmployeeID){
+    public List<Object> getEmployee(int EmployeeID){
         return connector.getDatabaseItem("employee","Employee_ID = " + EmployeeID);
     }
-    protected boolean hireEmployee(Employee employee){
+    public boolean hireEmployee(Employee employee,String[] phoneNumbers){
         return connector.insertDataToDatabase("employee",new Object[]{employee.getEmployeeID(), employee.getFirstName(), employee.getMiddleName(), employee.getLastName(),employee.getAddress(),
-        employee.getPassword(),employee.getBranchID(),employee.getSSN()} );
+        employee.getPassword(),employee.getBranchID(),employee.getSSN()} )
+                &&connector.insertDataToDatabase("ephone", phoneNumbers);
     }
-    protected boolean rearrangeEmployee(String address, int employeeID){
+    public boolean rearrangeEmployee(String address, int employeeID){
 
         return connector.setDataToDatabase("employee", "Address",address,"Employee_ID = " + employeeID );
     }
-    protected boolean dismissEmployee(int employeeID){
+    public boolean dismissEmployee(int employeeID){
         return connector.removeDataFromDatabase("employee", "Employee_ID = " + employeeID);
     }
 
-    protected boolean hireManager(Employee employee, int monthlySalary){
-        return  hireEmployee(employee)&&connector.insertDataToDatabase("manager", new Object[]{monthlySalary});
+    public boolean hireManager(Employee employee, int monthlySalary, String[] phoneNumbers){
+        return  hireEmployee(employee, phoneNumbers)&&connector.insertDataToDatabase("manager", new Object[]{monthlySalary});
     }
-    protected boolean rearrangeManager(int monthlySalary, int employeeID){
+    public boolean rearrangeManager(int monthlySalary, int employeeID){
         return connector.setDataToDatabase("manager", "Monthly_Salary",monthlySalary + "" , " Employee_ID = " + employeeID );
     }
 
 
-    protected boolean hireReceptionist(Employee employee, int monthlySalary){
-        return hireEmployee(employee)&&connector.insertDataToDatabase("receptionist", new Object[]{monthlySalary});
+    public boolean hireReceptionist(Employee employee, int monthlySalary, String[] phoneNumbers){
+        return hireEmployee(employee, phoneNumbers)&&connector.insertDataToDatabase("receptionist", new Object[]{monthlySalary});
     }
-    protected boolean rearrangeReceptionist(int weeklySalary, int employeeID){
+    public boolean rearrangeReceptionist(int weeklySalary, int employeeID){
         return  connector.setDataToDatabase("receptionist","Weekly_Salary" ,weeklySalary + "" , " Employee_ID = " + employeeID );
     }
 
 
-    protected boolean hireTrainer(Employee employee, int hourlySalary){
-        return hireEmployee(employee)&&connector.insertDataToDatabase("trainer", new Object[]{hourlySalary});
+    public boolean hireTrainer(Employee employee, int hourlySalary, String[] phoneNumbers){
+        return hireEmployee(employee,phoneNumbers)&&connector.insertDataToDatabase("trainer", new Object[]{hourlySalary});
     }
-    protected boolean rearrangeTrainer(int hourlySalary, int employeeID){
+    public boolean rearrangeTrainer(int hourlySalary, int employeeID){
         return connector.setDataToDatabase("trainer","Hourly_Salary",hourlySalary + "",  " Employee_ID = " + employeeID );
     }
 
 
-    protected boolean hireCleaner(Employee employee, int dailySalary){
-        return hireEmployee(employee)&&connector.insertDataToDatabase("Cleaner", new Object[]{dailySalary});
+    public boolean hireCleaner(Employee employee, int dailySalary, String[] phoneNumbers){
+        return hireEmployee(employee, phoneNumbers)&&connector.insertDataToDatabase("Cleaner", new Object[]{dailySalary});
     }
-    protected boolean rearrangeCleaner(int dailySalary, int employeeID){
+    public boolean rearrangeCleaner(int dailySalary, int employeeID){
         return connector.setDataToDatabase("cleaner","Daily_Salary" ,dailySalary + ""," Employee_ID = " + employeeID );
     }
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Trainer extends Employee{
     private int hourlySalary;
-    DatabaseConnector connector;
+    private DatabaseConnector connector;
 
     //Constructor for trainer
     public Trainer(String firstName, String middleName, String lastName, String address, String  password,  int SSN, int employeeID,int branchID,  String[] phoneNumber, int hourlySalary) {
@@ -24,18 +24,18 @@ public class Trainer extends Employee{
 
 
     //Methods for batches [Batch_ID, Start_Time, End_Time, Batch_type, Branch_ID, Employee_ID]
-    boolean createBatch(int batchID, String startTime, String endTime, String batchType, int branchID, int employeeID){
+    public boolean createBatch(int batchID, String startTime, String endTime, String batchType, int branchID, int employeeID){
         Object[] batchObject = new Object[]{batchID,startTime,endTime,batchType,branchID, employeeID};
         return connector.insertDataToDatabase("batches", batchObject);
     }
     // Method for rearranging time for a specified batch
-    boolean rearrangeBatch(int batchID, String startTime, String endTime){
+    public boolean rearrangeBatch(int batchID, String startTime, String endTime){
         boolean startTimeIsUpdated,endTimeIsUpdated;
         startTimeIsUpdated = connector.setDataToDatabase("batches","Start_Time",startTime,"Batch_ID = " + batchID);
         endTimeIsUpdated = connector.setDataToDatabase("batches","End_Time",endTime,"Batch_ID = " + batchID);
         return startTimeIsUpdated&&endTimeIsUpdated;
     }
-    boolean removeBatch(int batchID){
+    public boolean removeBatch(int batchID){
         return connector.removeDataFromDatabase("batches" , "Batch_ID = " + batchID );
     }
     public List<Object>  getBatch(int batchID){
@@ -45,10 +45,10 @@ public class Trainer extends Employee{
        return connector.getDatabaseTable("batches");
     }
     //methods for attendance of customers for batches
-    boolean includeCustomer(int customerID,int batchID){
+    public boolean includeCustomer(int customerID,int batchID){
         return connector.insertDataToDatabase("attends",new Object[]{customerID,batchID});
     }
-    boolean excludeCustomer(int customerID,int batchID){
+    public boolean excludeCustomer(int customerID,int batchID){
        // System.out.println("CID = " + customerID + " AND" + " Batch_ID = " + batchID );
         return connector.removeDataFromDatabase("attends","CID = " + customerID + " AND " + "Batch_ID = " + batchID );
     }

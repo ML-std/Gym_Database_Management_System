@@ -1,10 +1,10 @@
 import java.sql.*;
 import java.util.*;
 
-public class DatabaseConnector {
+    class DatabaseConnector {
     Connection conn;
     //Database Connector constructor that connects the database
-    public DatabaseConnector(){
+    protected DatabaseConnector(){
         try{
       String url = "jdbc:mysql://127.0.0.1:3306/gym_management_database_system?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
          conn = DriverManager.getConnection(url, "root", null);}
@@ -164,15 +164,17 @@ public class DatabaseConnector {
             StringBuilder valueString = new StringBuilder(" values (");
             int objectCount = valueObjects.length;
             for (int i = 0;i < objectCount; i++) {
+                valueString.append("\"");
+
                 if (i < objectCount -1){
-                    valueString.append("\"");
-                valueString.append(valueObjects[i].toString());
+                    valueString.append(valueObjects[i].toString());
                 valueString.append("\"");
                 valueString.append(",");
                 }
                 else
-                    valueString.append(valueObjects[i].toString()).append(")");            }
-            String query = " insert into " + tableName + " (" +tableColumnNames +" " + valueString + "" + ";";
+                    valueString.append(valueObjects[i].toString()).append("\")");            }
+            String query = " insert into " + tableName  + valueString  ;
+            System.out.println(query);
             PreparedStatement preparedStmt = conn.prepareStatement(query);
             preparedStmt.executeUpdate();
 
@@ -192,7 +194,7 @@ public class DatabaseConnector {
             String normalString = queryString + "";
             System.out.println(normalString);
             Object o = getDatabaseList(tableName,normalString,true);
-
+            if (!(o==null)){
             if (!(o.toString().equals("[]"))){
             String query = "DELETE FROM " + tableName + " WHERE " + queryString;
                 System.out.println(1111);
@@ -200,9 +202,12 @@ public class DatabaseConnector {
             stmt.execute(query);
             return true;
         }
-            else
-                System.out.println("data is not valid ");
+            else   System.out.println("data is not valid ");
                 return false;
+
+        }
+        else   System.out.println("data is not valid ");
+            return false;
         }
         catch (SQLException e){
             System.out.println(e.getMessage());
@@ -259,7 +264,7 @@ public class DatabaseConnector {
       }
     }
     private String conditionRegulator(String condition){
-        String conditionName = "", conditionValue = "";
+        String conditionName, conditionValue;
         StringBuilder queryString = new StringBuilder();
         if (condition.contains("AND")){
             String[] strings = condition.split("AND");

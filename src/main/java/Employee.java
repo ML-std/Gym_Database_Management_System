@@ -5,7 +5,7 @@ public  class Employee  {
     private String firstName, middleName, lastName, address, password;
     private int SSN, employeeID, branchID;
     private String[] phoneNumber;
-    DatabaseConnector connector = new DatabaseConnector();
+    private DatabaseConnector connector;
 
     //Constructor of Employee
     public Employee(String firstName, String middleName, String lastName, String address,String password, int SSN, int employeeID, int branchID, String[] phoneNumber ) {
@@ -18,6 +18,7 @@ public  class Employee  {
         this.phoneNumber = phoneNumber;
         this.password = password;
         this.branchID = branchID;
+        connector = new DatabaseConnector();
     }
 
 
@@ -25,6 +26,7 @@ public  class Employee  {
     //Creates Temporary employee object to access login system
     public Employee(int employeeID){
         this.employeeID = employeeID;
+        connector = new DatabaseConnector();
     }
     //Method that logs in the user and specifies their role in the app
     public  boolean employeeLogin(int employeeID,String password){
