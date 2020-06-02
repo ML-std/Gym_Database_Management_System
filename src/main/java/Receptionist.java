@@ -1,27 +1,23 @@
-import java.sql.Statement;
+import java.sql.Time;
+import java.util.ArrayList;
 
 public class Receptionist extends Employee {
    private int weeklySalary;
-   Receptionist tmpReceptionist;
+
    DatabaseConnector connector;
    //constructor for receptionist
     public Receptionist(String firstName, String middleName, String lastName, String address, String password, int SSN, int employeeID, String[] phoneNumber, int weeklySalary) {
         super(firstName, middleName, lastName, address, password, SSN, employeeID, phoneNumber);
         this.weeklySalary = weeklySalary;
     }
-    public Receptionist(){
+
+    //Creates temporary trainer object to access login system
+    public Receptionist(int employeeID){
+        super(employeeID);
+        connector = new DatabaseConnector();
     }
 
-    public boolean employeeLogin(int employeeID,String password){
-        Object[] o = connector.getDatabaseList("Password", "employee","Employee_ID = " + employeeID);
-        if (password.equals(o[0].toString())){
-            System.out.println("it works!");
-            tmpReceptionist= new Receptionist();
-            return true;
-        }
-        else System.out.println("invalid password");
-        return false;
-    }
+
     //Methods for modifying equipments
     public static boolean addEquipment(){
         return true;
@@ -127,6 +123,7 @@ public class Receptionist extends Employee {
     public void setWeeklySalary(int weeklySalary) {
         this.weeklySalary = weeklySalary;
     }
+
 
 
 

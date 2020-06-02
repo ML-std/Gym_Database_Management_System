@@ -6,10 +6,15 @@ public class Manager extends Employee{
         this.monthlySalary = monthlySalary;
     }
 
-    //Methods for modifying employees
 
-    protected void getEmployee(){
+    //Creates temporary manager object to access login system
+    public Manager(int employeeID){
+        super(employeeID);
+        connector = new DatabaseConnector();
     }
+
+    //Methods for modifying employees
+    protected void getEmployee(){ }
     protected boolean hireManager(){
         return true;
     }

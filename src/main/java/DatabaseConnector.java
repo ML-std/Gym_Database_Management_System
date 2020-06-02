@@ -1,6 +1,3 @@
-import org.omg.PortableInterceptor.ObjectReferenceFactory;
-
-import javax.swing.*;
 import java.sql.*;
 import java.util.*;
 
@@ -12,7 +9,7 @@ public class DatabaseConnector {
       String url = "jdbc:mysql://127.0.0.1:3306/gym_management_database_system?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
          conn = DriverManager.getConnection(url, "root", null);}
         catch (SQLException e){
-            e.fillInStackTrace();
+            System.out.println(e.getMessage());
         }
 
 
@@ -32,7 +29,7 @@ public class DatabaseConnector {
         return arrayList;
     }
     // gets selected rows items with condition
-    protected Object[] getDatabaseList(String selectedRow, String tableName,String condition){
+    protected ArrayList<Object> getDatabaseRowList(String selectedRow, String tableName, String condition){
         // List that stores String arrays as a List
         List<Object[]> arrayList = new ArrayList<>();
         String conditionName, conditionValue;
@@ -51,13 +48,13 @@ public class DatabaseConnector {
             System.out.println(e.getMessage());
             return null;
         }
-        //Object[] o = new Object[arrayList.size()];
-        for (int i = 0; i<arrayList.size(); i++){
-          //  o[i] = arrayList.get(0);
+        ArrayList<Object> tmp = new ArrayList<>();
+        for (Object[] objects : arrayList) {
+            tmp.add(objects[0]);
         }
 
 
-        return arrayList.get(0);
+        return tmp;
 
     }
 
@@ -81,9 +78,9 @@ public class DatabaseConnector {
         }
         ArrayList<Object> objectList =  new ArrayList<>();
        // Object[] o =  new Object[arrayList.size()];
-        for (int i = 0; i < arrayList.size(); i++){
-           // o[i] = arrayList.get(i)[0];
-            objectList.add(arrayList.get(i)[0]);
+        for (Object[] objects : arrayList) {
+            // o[i] = arrayList.get(i)[0];
+            objectList.add(objects[0]);
         }
 
         return objectList;
@@ -119,7 +116,7 @@ public class DatabaseConnector {
 
     //Method for getting data from database where condition is like "CID = 300001"
     //This method gets the first item that is in the condition.
-    protected Object[] getDatabaseItem(String tableName,String condition){
+    protected ArrayList<Object> getDatabaseItem(String tableName,String condition){
         // List that stores String arrays as a List
         List<Object[]> arrayList = new ArrayList<>();
         String conditionName, conditionValue;
@@ -138,7 +135,7 @@ public class DatabaseConnector {
             System.out.println(e.getMessage());
             return null;
         }
-        return arrayList.get(0);
+        return new ArrayList<>(Arrays.asList(arrayList.get(0)));
 
     }
 
@@ -201,22 +198,36 @@ public class DatabaseConnector {
     }
     //Method that deletes data from database
     protected boolean removeDataFromDatabase(String tableName, String condition){
-        String conditionName, conditionValue;
+        String conditionName, conditionValue, conditionName2 ,conditionValue2 = "";
         StringTokenizer stringTokenizer = new StringTokenizer(condition, " =");
         conditionName = stringTokenizer.nextToken();
         conditionValue =" = " + "\"" + stringTokenizer.nextToken() + "\"";
-        boolean isDeleted;
+        System.out.println( conditionValue);
+        while (stringTokenizer.hasMoreTokens()) {
+            System.out.println(stringTokenizer.nextToken());
+            StringTokenizer tmpTokenizer = new StringTokenizer(stringTokenizer.nextToken(),"");
+                conditionName2 = tmpTokenizer.nextToken();
+                conditionValue2 =" = " + "\"" + tmpTokenizer.nextToken() + "\"";
+             System.out.println();
+        }
+       // System.out.println( "DELETE FROM " + tableName + " WHERE " + conditionName + conditionValue);
         try {
+            Object o = getDatabaseList(tableName,condition);
+            System.out.println(o.toString());
+            if (!(o.toString().equals("[]"))){
             String query = "DELETE FROM " + tableName + " WHERE " + conditionName + conditionValue;
+                System.out.println(query);
             Statement stmt = conn.createStatement();
-            isDeleted = stmt.execute(query);
-
+            stmt.execute(query);
+            return true;
+        }
+            else return false;
         }
         catch (SQLException e){
             System.out.println(e.getMessage());
             return false;
         }
-        return isDeleted;
+
     }
     //Fills the list for the getter methods
     private void fillList(ResultSet rs, List<Object[]> arrayList , boolean isAList, boolean hasMetaData ){
@@ -229,8 +240,11 @@ public class DatabaseConnector {
             tempArray[i-1] = metaData.getColumnName(i);
         }
         arrayList.add(tempArray);}
-          while (rs.next()) {
-
+        boolean hasMoreElement=false;
+         do {
+            if (isAList){
+               hasMoreElement =  rs.next();
+            }
             Object[] tmpArray = new Object[columnCount];
             for (int j =1;j<=columnCount;j++){
                     switch (metaData.getColumnTypeName(j)) {
@@ -253,47 +267,73 @@ public class DatabaseConnector {
             }
 
             arrayList.add(tmpArray);
-            if (!isAList){
-                break;
+                if (!isAList){
+                    break;
             }
-        }
+      } while (hasMoreElement&&!rs.isLast());
 
       }
       catch (SQLException e){
           System.out.println(e.getMessage());
       }
     }
+
     //Examples for if these works
     public static void main(String[] args) {
         DatabaseConnector databaseConnector = new DatabaseConnector();
-
+        System.out.println("<<Full Of Table Writing>>");
         List<Object[]> o =   databaseConnector.getDatabaseTable("customer");
         for (Object[] objects : o) {
             System.out.println(Arrays.toString(objects));
         }
-        ArrayList<Object> o2 = databaseConnector.getDatabaseRowList("CID", "customer");
+        System.out.println();
+        System.out.println("<<Getting Row List With Condition>>");
+        System.out.println();
+        ArrayList<Object> o2 = databaseConnector.getDatabaseRowList("Middle_Name", "customer","CID = 300001");
         for (Object objects : o2) {
-            System.out.println(objects.toString());
+            System.out.print(objects.toString() + " ");
         }
         System.out.println();
-        Object[] o3 = databaseConnector.getDatabaseItem("customer", " Middle_Name = M ");
-        for (Object value : o3) System.out.print(value.toString() + " ");
-        }/*
-       databaseConnector.removeDataFromDatabase("customer", "First_Name = davai");
-        o = databaseConnector.getDatabaseTable("customer");
-        for (Object[] objects : o) {
-            System.out.println(Arrays.toString(objects));
-        }/*
+        System.out.println();
+        System.out.println("<<Getting Row List Without Condition>>");
+        System.out.println();
+        ArrayList<Object> o3 = databaseConnector.getDatabaseRowList("CID", "customer");
+        for (Object objects : o3) {
+            System.out.print(objects.toString() + "  ");
+        }
+        System.out.println();
+        System.out.println();
+        System.out.println("<<Getting Database item With Condition>>");
+        System.out.println();
+        ArrayList<Object> o4 = databaseConnector.getDatabaseItem("customer", " CID = 300001 ");
+        for (Object value : o4) System.out.print(value.toString() + " ");
+        System.out.println();
+        System.out.println();
+        System.out.println("<<Inserting a data from database>>");
+        System.out.println();
         databaseConnector.insertDataToDatabase("customer", new Object[]{300022,"davai","M","lmao","FEMALE","adres", 1010101010,"2000-09-10","null"});
         o = databaseConnector.getDatabaseTable("customer");
         for (Object[] objects : o) {
             System.out.println(Arrays.toString(objects));
-        }/*
-      databaseConnector.setDataToDatabase("customer","SEX","MALE"," First_Name = davai");
+        }
+        System.out.println();
+        System.out.println("<<Setting a data from database>>");
+        System.out.println();
+        databaseConnector.setDataToDatabase("customer","SEX","FEMALE"," Middle_Name = M");
         o = databaseConnector.getDatabaseTable("customer");
         for (Object[] objects : o) {
             System.out.println(Arrays.toString(objects));
-        }*/
-    }
+        }
+        System.out.println();
+        System.out.println("<<Removing a data from database>>");
+        System.out.println();
+       databaseConnector.removeDataFromDatabase("customer", "Middle_Name = B");
+        o = databaseConnector.getDatabaseTable("customer");
+        for (Object[] objects : o) {
+            System.out.println(Arrays.toString(objects));
+        }
+
+
+    }}
 
 
