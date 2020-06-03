@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Receptionist.receptionist">
+   <children>
+      <Button fx:id="facilityReview" layoutX="96.0" layoutY="232.0" mnemonicParsing="false" onAction="#handleFacilityReviewButtonAction" text="CustomerReviewFacility" />
+      <Button fx:id="trainerReview" layoutX="410.0" layoutY="232.0" mnemonicParsing="false" onAction="#handleTrainerReviewButtonAction" text="CustomerReviewTrainer" />
+      <Button fx:id="equipment" layoutX="96.0" layoutY="72.0" mnemonicParsing="false" onAction="#handleEquipmentButtonAction" text="Equipment" />
+      <Button fx:id="customer" layoutX="410.0" layoutY="72.0" mnemonicParsing="false" onAction="#handleCustomerButtonAction" text="Customer" />
+      <Button fx:id="facilityUsage" layoutX="96.0" layoutY="155.0" mnemonicParsing="false" onAction="#handleFacilityUsageButtonAction" text="CustomerUsageFacility" />
+      <Button fx:id="customerReport" layoutX="410.0" layoutY="155.0" mnemonicParsing="false" onAction="#handleCustomerReportButtonAction" text="CustomerReport" />
+      <Button fx:id="backButton" layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onAction="#handleBackButtonAction" text="Back" />
+      <Label fx:id="username" layoutX="14.0" layoutY="14.0" text="Label" />
+   </children>
+</AnchorPane>

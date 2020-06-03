@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Trainer.trainerBatches">
+
+   <Button fx:id="addButton" layoutX="281.0" layoutY="152.0" mnemonicParsing="false" onAction="#handleAddButtonAction" text="Add" />
+   <Button fx:id="backButton" layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onAction="#handleBackButtonAction" text="Back" />
+   <TextField fx:id="batchID" layoutX="14.0" layoutY="38.0" />
+   <TextField fx:id="startTime" layoutX="226.0" layoutY="38.0" />
+   <TextField fx:id="endTime" layoutX="437.0" layoutY="38.0" />
+   <Label layoutX="66.0" layoutY="14.0" text="Batch ID" />
+   <Label layoutX="275.0" layoutY="14.0" text="Start Time" />
+   <Label layoutX="487.0" layoutY="14.0" text="End Time" />
+   <TextField fx:id="batchType" layoutX="15.0" layoutY="114.0" />
+   <TextField fx:id="branchID" layoutX="227.0" layoutY="114.0" />
+   <TextField fx:id="employeeID" layoutX="437.0" layoutY="114.0" />
+   <Label layoutX="60.0" layoutY="88.0" text="Batch Type" />
+   <Label layoutX="274.0" layoutY="88.0" text="Branch ID" />
+   <Label layoutX="479.0" layoutY="88.0" text="Employee ID" />
+   <TextField fx:id="batchIDRearrange" layoutX="14.0" layoutY="213.0" />
+   <TextField fx:id="startTimeRearrange" layoutX="226.0" layoutY="213.0" />
+   <TextField fx:id="endTimeRearrange" layoutX="437.0" layoutY="213.0" />
+   <Button fx:id="rearrangeBatchButton" layoutX="265.0" layoutY="242.0" mnemonicParsing="false" onAction="#handleRearrangeBatchButtonAction" text="Rearrange" />
+   <Label layoutX="75.0" layoutY="192.0" text="Batch ID" />
+   <Label layoutX="286.0" layoutY="192.0" text="Start Time" />
+   <Label layoutX="498.0" layoutY="192.0" text="End Time" />
+   <TextField fx:id="batchIDRemove" layoutX="349.0" layoutY="361.0" />
+   <Button fx:id="removeBatchButton" layoutX="511.0" layoutY="361.0" mnemonicParsing="false" onAction="#handleRemoveBatchButtonAction" text="Remove" />
+   <Label layoutX="410.0" layoutY="344.0" text="Batch ID" />
+   <Label layoutX="163.0" layoutY="344.0" text="Batch ID" />
+   <TextField fx:id="batchIDGet" layoutX="103.0" layoutY="361.0" />
+   <Button fx:id="getBatchButton" layoutX="260.0" layoutY="361.0" mnemonicParsing="false" onAction="#handleGetBatchButtonAction" text="Get Batch" />
+
+</AnchorPane>
