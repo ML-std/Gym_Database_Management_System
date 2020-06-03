@@ -2,6 +2,7 @@ import java.sql.*;
 import java.util.*;
 
     class DatabaseConnector {
+        private final String DATABASE_NAME = "`gym_management_database_system`.";
     Connection conn;
     //Database Connector constructor that connects the database
     protected DatabaseConnector(){
@@ -20,7 +21,7 @@ import java.util.*;
         List<Object[]> arrayList = new ArrayList<>();
         try {
             Statement stmt=conn.createStatement();
-            ResultSet rs=stmt.executeQuery("SELECT * FROM " +  tableName);
+            ResultSet rs=stmt.executeQuery("SELECT * FROM " +DATABASE_NAME +  tableName);
             fillList(rs,arrayList,true, true);}
         catch (Exception e){
             System.out.println(e.getMessage());
@@ -36,7 +37,7 @@ import java.util.*;
 
         try {
             Statement stmt=conn.createStatement();
-            String query ="SELECT " + selectedRow+ " FROM " + tableName+ " where " + queryString ;
+            String query ="SELECT " + selectedRow+ " FROM " + DATABASE_NAME +  tableName+ " where " + queryString ;
             ResultSet rs=stmt.executeQuery(query);
             fillList(rs,arrayList,true,false);
 
@@ -64,7 +65,7 @@ import java.util.*;
 
         try {
             Statement stmt=conn.createStatement();
-            String query ="SELECT " + selectedRow+ " FROM " + tableName ;
+            String query ="SELECT " + selectedRow+ " FROM " +DATABASE_NAME+ tableName ;
             ResultSet rs=stmt.executeQuery(query);
             fillList(rs,arrayList,true,false);
 
@@ -93,7 +94,7 @@ import java.util.*;
 
         try {
             Statement stmt=conn.createStatement();
-            String query ="SELECT * FROM " + tableName+ " where " + queryString ;
+            String query ="SELECT * FROM "+DATABASE_NAME + tableName+ " where " + queryString ;
             ResultSet rs=stmt.executeQuery(query);
             fillList(rs,arrayList,true,false);
 
@@ -117,7 +118,7 @@ import java.util.*;
 
         try {
             Statement stmt=conn.createStatement();
-            String query ="SELECT * FROM " + tableName+ " where " + queryString;
+            String query ="SELECT * FROM "+ DATABASE_NAME + tableName+ " where " + queryString;
             ResultSet rs=stmt.executeQuery(query);
             rs.next();
             fillList(rs,arrayList,false,false);
@@ -126,7 +127,16 @@ import java.util.*;
             System.out.println(e.getMessage());
             return null;
         }
-        return new ArrayList<>(Arrays.asList(arrayList.get(0)));
+        ArrayList<Object> e = new ArrayList<>();
+        int i = 0;
+        if (!arrayList.isEmpty()){
+        for (Object o : arrayList.get(0)){
+
+            e.add(arrayList.get(0)[i]);
+            i++;
+        }}
+
+        return e;
 
     }
 
@@ -134,8 +144,10 @@ import java.util.*;
     //Method for setting data to database where condition is like "CID = 300001"
     protected boolean setDataToDatabase(String tableName, String columnName, String newValue, String condition){
         String queryString = conditionRegulator(condition);
+        columnName = "`" + columnName +"`";
+
         try {
-            String query = "update " + tableName + " set "+ columnName + " = ? where " +queryString ;
+            String query = "update " + DATABASE_NAME + "`"+ tableName +"`" + " set "+ columnName + " = ? where " +queryString ;
             PreparedStatement preparedStmt = conn.prepareStatement(query);
             preparedStmt.setString   (1, newValue);
         preparedStmt.executeUpdate();
@@ -153,16 +165,19 @@ import java.util.*;
         try{
             Statement stmt=conn.createStatement();
             StringBuilder tableColumnNames = new StringBuilder();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM " +  tableName);
+            ResultSet rs = stmt.executeQuery("SELECT * FROM " + DATABASE_NAME +  tableName);
             ResultSetMetaData metaData = rs.getMetaData();
             int columnCount =  metaData.getColumnCount();
-            for (int i =1;i<=columnCount;i++){
-                if (i < columnCount )
-                tableColumnNames.append(metaData.getColumnName(i)).append(", ");
-                else  tableColumnNames.append(metaData.getColumnName(i)).append(") ");
-            }
-            StringBuilder valueString = new StringBuilder(" values (");
             int objectCount = valueObjects.length;
+            for (int i =1;i<=objectCount;i++){
+                if (i==1){
+                tableColumnNames.append("`");}
+                if (i < objectCount ){
+                tableColumnNames.append(metaData.getColumnName(i)).append("`, `");}
+                else  tableColumnNames.append(metaData.getColumnName(i)).append("`) ");
+            }
+            StringBuilder valueString = new StringBuilder("VALUES (");
+
             for (int i = 0;i < objectCount; i++) {
                 valueString.append("\"");
 
@@ -172,9 +187,8 @@ import java.util.*;
                 valueString.append(",");
                 }
                 else
-                    valueString.append(valueObjects[i].toString()).append("\")");            }
-            String query = " insert into " + tableName  + valueString  ;
-            System.out.println(query);
+                    valueString.append(valueObjects[i].toString()).append("\")"); }
+            String query = " insert into " + DATABASE_NAME  + tableName + " ( " +tableColumnNames +  valueString  ;
             PreparedStatement preparedStmt = conn.prepareStatement(query);
             preparedStmt.executeUpdate();
 
@@ -192,12 +206,10 @@ import java.util.*;
 
         try {
             String normalString = queryString + "";
-            System.out.println(normalString);
             Object o = getDatabaseList(tableName,normalString,true);
             if (!(o==null)){
             if (!(o.toString().equals("[]"))){
-            String query = "DELETE FROM " + tableName + " WHERE " + queryString;
-                System.out.println(1111);
+            String query = "DELETE FROM "+ DATABASE_NAME + tableName + " WHERE " + queryString;
             Statement stmt = conn.createStatement();
             stmt.execute(query);
             return true;
@@ -228,9 +240,10 @@ import java.util.*;
         arrayList.add(tempArray);}
         boolean hasMoreElement=false;
          do {
-            if (isAList){
-               hasMoreElement =  rs.next();
-            }
+             if (isAList){
+               hasMoreElement =  rs.next();}
+
+
             Object[] tmpArray = new Object[columnCount];
             for (int j =1;j<=columnCount;j++){
                     switch (metaData.getColumnTypeName(j)) {
@@ -280,7 +293,6 @@ import java.util.*;
                 }
             }
 
-            System.out.println(queryString);
         }
         else if (condition.contains("OR")){
             String[] strings = condition.split("OR");
@@ -307,12 +319,14 @@ import java.util.*;
         }
         return (queryString + "");
     }
+
+
     private List<Object[]> getDatabaseList(String tableName,String condition,boolean isRegularCondition){
         // List that stores String arrays as a List
         List<Object[]> arrayList = new ArrayList<>();
         try {
             Statement stmt=conn.createStatement();
-            String query ="SELECT * FROM " + tableName+ " where " + condition ;
+            String query ="SELECT * FROM "+ DATABASE_NAME + tableName+ " where " + condition ;
             ResultSet rs=stmt.executeQuery(query);
             fillList(rs,arrayList,true,false);
         }
@@ -326,7 +340,11 @@ import java.util.*;
 
     }
 
-    //Examples for if these works
+        protected String getDATABASE_NAME() {
+            return DATABASE_NAME;
+        }
+
+        //Examples for if these works
     public static void main(String[] args) {
         DatabaseConnector databaseConnector = new DatabaseConnector();
         System.out.println("<<Full Of Table Writing>>");
@@ -337,7 +355,7 @@ import java.util.*;
         System.out.println();
         System.out.println("<<Getting Row List With Condition>>");
         System.out.println();
-        ArrayList<Object> o2 = databaseConnector.getDatabaseRowList("Middle_Name", "customer","CID = 300001");
+        ArrayList<Object> o2 = databaseConnector.getDatabaseRowList("Middle_Name", "customer","CID = 300002");
         for (Object objects : o2) {
             System.out.print(objects.toString() + " ");
         }
@@ -353,13 +371,13 @@ import java.util.*;
         System.out.println();
         System.out.println("<<Getting Database item With Condition>>");
         System.out.println();
-        ArrayList<Object> o4 = databaseConnector.getDatabaseItem("customer", " CID = 300001 ");
+        ArrayList<Object> o4 = databaseConnector.getDatabaseItem("customer", " CID = 300002 ");
         for (Object value : o4) System.out.print(value.toString() + " ");
         System.out.println();
         System.out.println();
         System.out.println("<<Inserting a data from database>>");
         System.out.println();
-        databaseConnector.insertDataToDatabase("customer", new Object[]{300022,"davai","M","lmao","FEMALE","adres", 1010101010,"2000-09-10","null"});
+        databaseConnector.insertDataToDatabase("customer", new Object[]{"0","davai","M","GOOD","FEMALE","adress", 1010101010,"1965-08-08"});
         o = databaseConnector.getDatabaseTable("customer");
         for (Object[] objects : o) {
             System.out.println(Arrays.toString(objects));
@@ -367,7 +385,7 @@ import java.util.*;
         System.out.println();
         System.out.println("<<Setting a data from database>>");
         System.out.println();
-        databaseConnector.setDataToDatabase("customer","SEX","FEMALE"," Middle_Name = M");
+        databaseConnector.setDataToDatabase("customer","SEX","MALE"," First_Name = davai");
         o = databaseConnector.getDatabaseTable("customer");
         for (Object[] objects : o) {
             System.out.println(Arrays.toString(objects));
@@ -375,7 +393,7 @@ import java.util.*;
         System.out.println();
         System.out.println("<<Removing a data from database>>");
         System.out.println();
-       databaseConnector.removeDataFromDatabase("customer", "Middle_Name = O");
+       databaseConnector.removeDataFromDatabase("customer", " First_Name = davai");
         o = databaseConnector.getDatabaseTable("customer");
         for (Object[] objects : o) {
             System.out.println(Arrays.toString(objects));

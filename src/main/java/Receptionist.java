@@ -22,8 +22,17 @@ public class Receptionist extends Employee {
 
 
     //Methods for modifying equipments
-    public boolean addEquipment(int equipmentID,String name,String manufacturer, Condition condition, String type, int count, int branchID){
-        return connector.insertDataToDatabase("equipment", new Object[]{equipmentID, name, manufacturer, condition, type, count, branchID});
+
+    public boolean addEquipment(String name,String manufacturer, Condition condition, String type, int count, int branchID){
+        connector.insertDataToDatabase("equipment", new Object[]{"0",name, manufacturer, condition, type, count, branchID});
+        int tmpEquipmentID = 0;
+        List<Object> equipmentIDs = connector.getDatabaseRowList("EID","equipment");
+        for (Object o: equipmentIDs) {
+            if (tmpEquipmentID < (int) o){
+                tmpEquipmentID = (int )o;
+            }
+        }
+    return connector.insertDataToDatabase("equipment_maintains", new Object[]{tmpEquipmentID,this.getEmployeeID()});
     }
     public boolean setEquipment(int equipmentID,Condition condition){
         return connector.setDataToDatabase("equipment", "Condition", condition + "", "EID = " + equipmentID);
@@ -36,8 +45,8 @@ public class Receptionist extends Employee {
     public boolean removeEquipment(int equipmentID ){
         return connector.removeDataFromDatabase("equipment", "EID = " + equipmentID);
     }
-    public List<Object> getEquipment(int equipmentID){
-        return connector.getDatabaseItem("equipment", "EID = " + equipmentID);
+    public List<Object> getEquipment(String equipmentName){
+        return connector.getDatabaseItem("equipment", "Name = " + equipmentName);
     }
     public List<Object[]> getEquipmentTable(){
         return connector.getDatabaseTable("equipment");
@@ -198,13 +207,20 @@ public class Receptionist extends Employee {
 
     public static void main(String[] args) {
         Receptionist receptionist = new Receptionist(210001);
-       // System.out.println(receptionist.addCustomerReport(300001,20,90, 200,"2020-05-09"));
-        //System.out.println(receptionist.removeCustomerReport(300001));
-       List<Object> o=  receptionist.getFacilitiesUsedByCustomer(300017);
-       for (Object o1 : o ){
-           System.out.println(o1.toString());
-       }
-        System.out.println();
+        System.out.println("<<Adding equipment>>");
+        receptionist.addEquipment("davai5","M",Condition.FAIR,"FEMALE",100,100001);
+        System.out.println(receptionist.getEquipment("davai5"));
+        receptionist.setEquipment(600025,Condition.BAD);
+        receptionist.setEquipment(600025,150);
+        System.out.println("<<Setting equipment>>");
+        System.out.println(receptionist.getEquipment("davai5"));
+
+
+
+
+
+
+
     }
 
 

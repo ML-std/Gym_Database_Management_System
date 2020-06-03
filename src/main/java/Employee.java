@@ -21,15 +21,14 @@ public  class Employee  {
         connector = new DatabaseConnector();
     }
 
-
-
     //Creates Temporary employee object to access login system
     public Employee(int employeeID){
         this.employeeID = employeeID;
         connector = new DatabaseConnector();
     }
+
     //Method that logs in the user and specifies their role in the app
-    public  boolean employeeLogin(int employeeID,String password){
+    public  String employeeLogin(int employeeID,String password){
         //If employeeID is correct continue, else return false
         boolean isEmployeeID = false;
         ArrayList<Object> employeeList = connector.getDatabaseRowList("Employee_ID","employee");
@@ -80,20 +79,19 @@ public  class Employee  {
                 if (employeeID == tmp) {
                     //some codes here...
                     employeeDataShow = "Logged as Trainer ";
-                    hasPlace =true;
+
                     break;
                 }
             }}
             employeeDataShow = employeeDataShow + "Welcome " + employeeData.get(1).toString() + " " +
                     employeeData.get(2).toString() + " " + employeeData.get(3).toString();
-            System.out.println(employeeDataShow);
-            return hasPlace;
+            return employeeDataShow;
         }
-        else System.out.println("invalid password");
-        return false;
+        else
+        return "invalid password";
     }
-        else System.out.println("invalid Employee ID");
-            return false;
+        else
+            return "invalid ID";
     }
 
 
@@ -157,7 +155,7 @@ public  class Employee  {
         return branchID;
     }
 
-    public void setBranchIDID(int branchID) {
+    public void setBranchID(int branchID) {
         this.branchID = branchID;
     }
 
@@ -167,6 +165,23 @@ public  class Employee  {
 
     public void setPhoneNumber(String[] phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    //Testing for Employee Class
+    public static void main(String[] args) {
+        //Test for Login Method in working cases
+        Employee manager = new Employee(200001);
+        System.out.println(manager.employeeLogin(manager.employeeID, 240698 +""));
+        Employee receptionist = new Employee(210001);
+        System.out.println(receptionist.employeeLogin(receptionist.employeeID, "" + 249987));
+        Employee trainer = new Employee(220001);
+        System.out.println(trainer.employeeLogin(trainer.employeeID,"" + 220011));
+        //Test for Invalid ID and invalid password
+        Employee invalidID = new Employee(1519894);
+        System.out.println(invalidID.employeeLogin(invalidID.employeeID,"klmpokmp"));
+        Employee invalidPwd = new Employee(220001);
+        System.out.println(invalidPwd.employeeLogin(invalidPwd.employeeID, "5486496"));
+
     }
 }
 

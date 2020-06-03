@@ -75,32 +75,39 @@ public class Trainer extends Employee{
     public void setHourlySalary(int hourlySalary) {
         this.hourlySalary = hourlySalary;
     }
+    //Test cases for trainer methods
     public static void main(String[] args) {
-        Trainer tmp2 = new Trainer(220001);
-        tmp2.employeeLogin(220010,"237010");
-     //   ArrayList<Object> e = tmp2.connector.getDatabaseRowList("Employee_ID","manager");
-      //  System.out.println(tmp2.createBatch(100344,"12:30:00","12:40:00","strength",100001, tmp2.getEmployeeID()));
-      //  System.out.println(tmp2.rearrangeBatch(100341,"12:40:00","13:30:00"));
-      /*  System.out.println(tmp2.removeBatch(100110));
-      List<Object> arrayList = tmp2.getBatch(100111);
-        for (Object objects : arrayList) {
-            System.out.println(objects.toString());
+        Trainer trainer = new Trainer(220001);
+        System.out.println("<<Creating batch>>");
+        trainer.createBatch(500007,"02:50:00","03:30:00","Strength",100001,220001);
+        System.out.println(trainer.getBatch(500007));
+        System.out.println();
+        System.out.println("<<Rearranging batch>>");
+        trainer.rearrangeBatch(500007,"02:20:00","03:20:00");
+        System.out.println(trainer.getBatch(500007));
+        System.out.println();
+        System.out.println("<<Deleting batch>>");
+        trainer.removeBatch(500007);
+        System.out.println(trainer.getBatch(500007));
+        System.out.println();
+        List<Object[]> batches = trainer.getBatchesTable();
+        for (Object[] o : batches) {
+            System.out.println(Arrays.toString(o));
         }
-        List<Object[]> arrayList2 = tmp2.getBatchesTable();
-        for (Object[] objects : arrayList2) {
-            System.out.println(Arrays.toString(objects));
-        }*//*
-        System.out.println( tmp2.includeCustomer(300001,500005));
-      System.out.println( tmp2.excludeCustomer(300002,500003));
-        List<Object> arrayList = tmp2.getAttendance(500004,true);
-        for (Object objects : arrayList) {
-            System.out.println(objects.toString());
-        }*/
-        //String firstName, String middleName, String lastName, String address,String password, int SSN, int employeeID, int branchID, String[] phoneNumber
-        Manager manager = new Manager(200001);
-      //  Employee employee = new Employee("hiyar","eşek","omg","lololol","202020",15696857,19093939,100001,new String[]{"534-239-212"});
-        //manager.hireEmployee(employee);
-       // System.out.println(manager.dismissEmployee(19093939));
+        System.out.println();
+        System.out.println();
+        System.out.println("<<Including customer to batch>>");
+        trainer.includeCustomer(300002,500003);
+        System.out.println(trainer.getAttendance(300002,true));
+        System.out.println();
+        System.out.println("<<Excluding customer from batch>>");
+        trainer.excludeCustomer(300002,500003);
+        System.out.println(trainer.getAttendance(300002,true));
+        List<Object[]> attendance = trainer.getAttendanceTable();
+        for ( Object[] o: attendance ) {
+            System.out.println(Arrays.toString(o));
+        }
     }
+
 
   }
