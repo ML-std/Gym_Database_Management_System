@@ -1,14 +1,18 @@
+package ServerSide;
 import java.sql.*;
 import java.util.*;
 
-    class DatabaseConnector {
+    public class DatabaseConnector {
         private final String DATABASE_NAME = "`gym_management_database_system`.";
     Connection conn;
+    public static ResultSet rs;
+
     //Database Connector constructor that connects the database
     protected DatabaseConnector(){
         try{
       String url = "jdbc:mysql://127.0.0.1:3306/gym_management_database_system?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-         conn = DriverManager.getConnection(url, "root", null);}
+         conn = DriverManager.getConnection(url, "root", null);
+        }
         catch (SQLException e){
             System.out.println(e.getMessage());
         }
@@ -96,7 +100,7 @@ import java.util.*;
             Statement stmt=conn.createStatement();
             String query ="SELECT * FROM "+DATABASE_NAME + tableName+ " where " + queryString ;
             ResultSet rs=stmt.executeQuery(query);
-            fillList(rs,arrayList,true,false);
+            fillList(rs,arrayList,true,true);
 
         }
         catch (Exception e){
@@ -104,7 +108,9 @@ import java.util.*;
             return null;
         }
 
-
+        if (arrayList.isEmpty()){
+            return null;
+        }
         return arrayList;
 
     }
@@ -147,12 +153,17 @@ import java.util.*;
         columnName = "`" + columnName +"`";
 
         try {
+            ArrayList<Object> e  = getDatabaseItem(tableName, condition);
+            if (e.isEmpty()){
+                return false;
+            }
+            else {
             String query = "update " + DATABASE_NAME + "`"+ tableName +"`" + " set "+ columnName + " = ? where " +queryString ;
             PreparedStatement preparedStmt = conn.prepareStatement(query);
             preparedStmt.setString   (1, newValue);
-        preparedStmt.executeUpdate();
+            preparedStmt.executeUpdate();
 
-    }
+    }}
     catch (Exception e){
         System.out.println(e.getMessage());
         return false;
@@ -211,7 +222,7 @@ import java.util.*;
             if (!(o.toString().equals("[]"))){
             String query = "DELETE FROM "+ DATABASE_NAME + tableName + " WHERE " + queryString;
             Statement stmt = conn.createStatement();
-            stmt.execute(query);
+           boolean real = stmt.execute(query);
             return true;
         }
             else   System.out.println("data is not valid ");

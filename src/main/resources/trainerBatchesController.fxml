@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="453.0" prefWidth="690.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Trainer.TrainerBatches">
+
+   <Button fx:id="addButton" layoutX="164.0" layoutY="166.0" mnemonicParsing="false" onAction="#handleAddButtonAction" text="Add" />
+   <Button fx:id="backButton" layoutX="23.0" layoutY="406.0" mnemonicParsing="false" onAction="#handleBackButtonAction" text="Back" />
+   <TextField fx:id="startTime" layoutX="108.0" layoutY="88.0" promptText="00:00:00" />
+   <TextField fx:id="endTime" layoutX="108.0" layoutY="134.0" promptText="00:00:00" />
+   <Label layoutX="147.0" layoutY="71.0" text="Start Time" />
+   <Label layoutX="149.0" layoutY="117.0" text="End Time" />
+   <TextField fx:id="batchType" layoutX="108.0" layoutY="37.0" />
+   <Label layoutX="144.0" layoutY="13.0" text="Batch Type" />
+   <TextField fx:id="batchIDRearrange" layoutX="363.0" layoutY="36.0" />
+   <TextField fx:id="startTimeRearrange" layoutX="363.0" layoutY="87.0" promptText="00:00:00" />
+   <TextField fx:id="endTimeRearrange" layoutX="363.0" layoutY="133.0" promptText="00:00:00" />
+   <Button fx:id="rearrangeBatchButton" layoutX="402.0" layoutY="165.0" mnemonicParsing="false" onAction="#handleRearrangeBatchButtonAction" text="Rearrange" />
+   <Label layoutX="415.0" layoutY="12.0" text="Batch ID" />
+   <Label layoutX="411.0" layoutY="70.0" text="Start Time" />
+   <Label layoutX="413.0" layoutY="116.0" text="End Time" />
+   <TextField fx:id="batchIDRemove" layoutX="450.0" layoutY="414.0" />
+   <Button fx:id="removeBatchButton" layoutX="617.0" layoutY="414.0" mnemonicParsing="false" onAction="#handleRemoveBatchButtonAction" text="Remove" />
+   <Label layoutX="392.0" layoutY="418.0" text="Batch ID" />
+   <Label layoutX="75.0" layoutY="235.0" text="Batch ID" />
+   <TextField fx:id="batchIDGet" layoutX="24.0" layoutY="259.0" />
+   <Button fx:id="getBatchButton" layoutX="65.0" layoutY="294.0" mnemonicParsing="false" onAction="#handleGetBatchButtonAction" text="Get Batch" />
+   <TableView fx:id="batchView" layoutX="217.0" layoutY="223.0" prefHeight="108.0" prefWidth="445.0">
+     <columns>
+       <TableColumn fx:id="batchIDColumn" prefWidth="77.0" text="Batch ID" />
+       <TableColumn fx:id="startTimeColumn" prefWidth="73.0" text="Start Time" />
+         <TableColumn fx:id="endTimeColumn" prefWidth="59.0" text="End Time" />
+         <TableColumn fx:id="batchTypeColumn" prefWidth="75.0" text="Batch Type" />
+         <TableColumn fx:id="branchIDColumn" prefWidth="75.0" text="Branch ID" />
+         <TableColumn fx:id="employeeIDColumn" prefWidth="85.0" text="Employee ID" />
+     </columns>
+   </TableView>
+
+</AnchorPane>

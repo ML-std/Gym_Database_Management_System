@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Trainer.Trainer">
+   <children>
+      <Button fx:id="attendsButton" layoutX="79.0" layoutY="243.0" mnemonicParsing="false" onAction="#handleAttendsButtonAction" prefHeight="25.0" prefWidth="125.0" text="Attends" />
+      <Button fx:id="batchesButton" layoutX="369.0" layoutY="243.0" mnemonicParsing="false" onAction="#handleBatchesButtonAction" prefHeight="25.0" prefWidth="125.0" text="Batches" />
+      <Button fx:id="backButton" layoutX="14.0" layoutY="354.0" mnemonicParsing="false" onAction="#handleBackButtonAction" text="Back" />
+      <Label fx:id="username" layoutX="14.0" layoutY="14.0" text="Label" />
+      <Button fx:id="attendanceTableButton" layoutX="80.0" layoutY="289.0" mnemonicParsing="false" onAction="#handleAttendanceTableButtonAction" prefHeight="50.0" prefWidth="125.0" text="Attendance Table" />
+      <Button fx:id="batchTableButton" layoutX="369.0" layoutY="289.0" mnemonicParsing="false" onAction="#handleBatchTableButtonAction" prefHeight="50.0" prefWidth="125.0" text="Batch Table" />
+   </children>
+</AnchorPane>

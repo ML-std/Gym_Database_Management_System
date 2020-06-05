@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Trainer.TrainerAttends">
+    <Button fx:id="backButton" layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onAction="#handleBackButtonAction" text="Back" />
+   <TextField fx:id="customerID" layoutX="150.0" layoutY="70.0" />
+   <TextField fx:id="batchID" layoutX="322.0" layoutY="70.0" />
+   <Button fx:id="includeButton" layoutX="231.0" layoutY="115.0" mnemonicParsing="false" onAction="#handleIncludeButtonAction" text="Include" />
+   <Button fx:id="excludeButton" layoutX="337.0" layoutY="115.0" mnemonicParsing="false" onAction="#handleExcludeButtonAction" text="Exclude" />
+   <Label layoutX="191.0" layoutY="38.0" text="Customer ID" />
+   <Label layoutX="365.0" layoutY="38.0" text="Batch ID" />
+   <CheckBox fx:id="isCustomer" layoutX="69.0" layoutY="281.0" mnemonicParsing="false" text="isCustomer" />
+   <TextField fx:id="customerOrBatchID" layoutX="35.0" layoutY="240.0" />
+   <Label layoutX="52.0" layoutY="200.0" text="Customer Or Batch ID" />
+   <Button fx:id="getAttendanceButton" layoutX="62.0" layoutY="313.0" mnemonicParsing="false" onAction="#handleGetAttendanceButtonAction" text="GetAttendance" />
+   <TableView fx:id="attendanceView" layoutX="304.0" layoutY="211.0" prefHeight="108.0" prefWidth="167.0">
+      <columns>
+         <TableColumn fx:id="batchIDColumn" prefWidth="77.0" text="Batch ID" />
+         <TableColumn fx:id="customerIDColumn" prefWidth="89.0" text="Customer ID" />
+      </columns>
+   </TableView>
+
+</AnchorPane>

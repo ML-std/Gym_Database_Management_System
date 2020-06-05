@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Manager.manager">
+    <Button fx:id="backButton" layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onAction="#handleBackButtonAction" text="Back" />
+   <Button fx:id="employTrainerButton" layoutX="456.0" layoutY="361.0" mnemonicParsing="false" onAction="#handleEmployTrainerButtonAction" text="Employee Settings" />
+    <Button layoutX="49.0" layoutY="140.0" mnemonicParsing="false" onAction="#handleTableShowAction" prefHeight="44.0" prefWidth="121.0" text="Show Table" />
+   <Label layoutX="52.0" layoutY="65.0" prefHeight="25.0" prefWidth="114.0" text="Put a table name" />
+   <Label fx:id="username" layoutX="21.0" layoutY="14.0" text="Label" />
+   <Label layoutX="395.0" layoutY="15.0" prefHeight="33.0" prefWidth="157.0" text="Get Employee Information" />
+   <TextField fx:id="name" layoutX="399.0" layoutY="78.0" promptText="name" />
+   <TextField fx:id="surname" layoutX="399.0" layoutY="120.0" promptText="surname" />
+   <TextField fx:id="employeeID" layoutX="399.0" layoutY="200.0" promptText="employee ID" />
+   <Label layoutX="399.0" layoutY="57.0" text="With Name and Surname" />
+   <Label layoutX="460.0" layoutY="154.0" text="OR" />
+   <Label layoutX="399.0" layoutY="176.0" prefHeight="17.0" prefWidth="149.0" text="       With employee ID" textAlignment="RIGHT" />
+   <Button fx:id="getInformationButton" layoutX="419.0" layoutY="242.0" mnemonicParsing="false" onAction="#handleGetInformationButtonAction" text="Get information" />
+   <ChoiceBox fx:id="tableChoice" layoutX="34.0" layoutY="103.0" prefWidth="150.0" />
+</AnchorPane>

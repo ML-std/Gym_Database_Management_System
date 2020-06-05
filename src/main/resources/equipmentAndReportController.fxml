@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="454.0" prefWidth="614.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Receptionist.EquipmentAndReport">
+    <Button fx:id="backButton" layoutX="14.0" layoutY="417.0" mnemonicParsing="false" onAction="#handleBackButtonAction" text="Back" />
+   <Label layoutX="117.0" layoutY="28.0" text="Add Equipment" />
+   <Label layoutX="384.0" layoutY="30.0" text="Add Customer Report" />
+   <TextField fx:id="equipmentName" layoutX="89.0" layoutY="70.0" promptText="Name" />
+   <TextField fx:id="manufacturer" layoutX="89.0" layoutY="109.0" promptText="Manufacturer" />
+    <RadioButton fx:id="badRadioButton" layoutX="200.0" layoutY="159.0" mnemonicParsing="false" text="BAD">
+        <toggleGroup>
+            <ToggleGroup fx:id="conditionGroup" />
+        </toggleGroup>
+    </RadioButton>
+    <RadioButton fx:id="fairRadioButton" layoutX="141.0" layoutY="159.0" mnemonicParsing="false" text="FAIR" toggleGroup="$conditionGroup" />
+    <RadioButton fx:id="goodRadioButton" layoutX="69.0" layoutY="159.0" mnemonicParsing="false" text="GOOD" toggleGroup="$conditionGroup" />
+   <TextField fx:id="type" layoutX="89.0" layoutY="192.0" promptText="Type" />
+   <TextField fx:id="count" layoutX="89.0" layoutY="234.0" promptText="Count" />
+   <Label layoutX="132.0" layoutY="134.0" prefHeight="25.0" prefWidth="53.0" text="Condition" />
+   <Button fx:id="addEquipmentButton" layoutX="104.0" layoutY="271.0" mnemonicParsing="false" onAction="#handleAddEquipmentAction" prefHeight="25.0" prefWidth="110.0" text="Add Equipment" />
+   <Button fx:id="addCustomerReport" layoutX="376.0" layoutY="224.0" mnemonicParsing="false" onAction="#handleAddCustomerReportAction" text="Add Customer Report" />
+   <TextField fx:id="customerID" layoutX="368.0" layoutY="72.0" promptText="Customer ID" />
+   <TextField fx:id="fat" layoutX="368.0" layoutY="111.0" promptText="Fat Percentage(%)" />
+   <TextField fx:id="height" layoutX="368.0" layoutY="187.0" promptText="Height(cm)" />
+   <Button fx:id="removeButton" layoutX="530.0" layoutY="417.0" mnemonicParsing="false" onAction="#handleRemoveButtonAction" text="Remove" />
+   <TextField fx:id="weight" layoutX="368.0" layoutY="149.0" promptText="Weight(Kg)" />
+   <Button fx:id="setEquipmentButton" layoutX="127.0" layoutY="394.0" mnemonicParsing="false" onAction="#handleSetEquipmentAction" prefHeight="25.0" prefWidth="132.0" text="Set Equipment" />
+   <TextField fx:id="removeID" layoutX="351.0" layoutY="417.0" promptText="Equipment or Report ID" />
+
+    <RadioButton fx:id="badSetRadioButton" layoutX="236.0" layoutY="366.0" mnemonicParsing="false" text="BAD">
+        <toggleGroup>
+            <ToggleGroup fx:id="conditionSetGroup" />
+        </toggleGroup>
+    </RadioButton>
+    <RadioButton fx:id="fairSetRadioButton" layoutX="178.0" layoutY="366.0" mnemonicParsing="false" text="FAIR" toggleGroup="$conditionSetGroup" />
+    <RadioButton fx:id="goodSetRadioButton" layoutX="118.0" layoutY="366.0" mnemonicParsing="false" text="GOOD" toggleGroup="$conditionSetGroup" />
+    <TextField fx:id="equipmentID" layoutX="119.0" layoutY="334.0" promptText="Equipment ID" />
+    <RadioButton fx:id="customerReportRadioButton" layoutX="461.0" layoutY="376.0" mnemonicParsing="false" text="Customer Report">
+        <toggleGroup>
+            <ToggleGroup fx:id="removeGroup" />
+        </toggleGroup>
+    </RadioButton>
+    <RadioButton fx:id="equipmentRadioButton" layoutX="351.0" layoutY="376.0" mnemonicParsing="false" text="Equipment" toggleGroup="$removeGroup" />
+   <Label layoutX="368.0" layoutY="353.0" prefHeight="17.0" prefWidth="211.0" text="Remove equipment or customer report" />
+
+</AnchorPane>

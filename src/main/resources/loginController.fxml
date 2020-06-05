@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Login">
+
+
+    <Label layoutX="262.0" layoutY="14.0" text="Welcome User" />
+    <TextField fx:id="id" layoutX="226.0" layoutY="101.0" onKeyTyped="#isNumber" />
+    <PasswordField fx:id="password" layoutX="226.0" layoutY="200.0" />
+    <Button fx:id="submitButton" layoutX="150.0" layoutY="319.0" mnemonicParsing="false" onAction="#handleSubmitButtonAction" prefHeight="67.0" prefWidth="300.0" text="Login" />
+    <Label layoutX="264.0" layoutY="84.0" text="Enter your ID:" />
+    <Label layoutX="245.0" layoutY="183.0" text="Enter your password:" />
+
+</AnchorPane>

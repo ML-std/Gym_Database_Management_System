@@ -1,6 +1,5 @@
-import com.sun.org.apache.bcel.internal.generic.Select;
+package ServerSide;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,8 +9,8 @@ public class Trainer extends Employee{
     private DatabaseConnector connector;
 
     //Constructor for trainer
-    public Trainer(String firstName, String middleName, String lastName, String address, String  password,  int SSN, int employeeID,int branchID,  String[] phoneNumber, int hourlySalary) {
-        super(firstName, middleName, lastName, address, password, SSN, employeeID, branchID, phoneNumber);
+    public Trainer(int employeeID,String firstName, String middleName, String lastName, String address, String  password ,int branchID,int SSN , String[] phoneNumber, int hourlySalary) {
+        super(employeeID, firstName, middleName, lastName, address, password, branchID, SSN, phoneNumber);
         this.hourlySalary = hourlySalary;
         connector = new DatabaseConnector();
     }
@@ -24,8 +23,8 @@ public class Trainer extends Employee{
 
 
     //Methods for batches [Batch_ID, Start_Time, End_Time, Batch_type, Branch_ID, Employee_ID]
-    public boolean createBatch(int batchID, String startTime, String endTime, String batchType, int branchID, int employeeID){
-        Object[] batchObject = new Object[]{batchID,startTime,endTime,batchType,branchID, employeeID};
+    public boolean createBatch( String startTime, String endTime, String batchType){
+        Object[] batchObject = new Object[]{"0",startTime,endTime,batchType,this.getBranchID(),this.getEmployeeID()};
         return connector.insertDataToDatabase("batches", batchObject);
     }
     // Method for rearranging time for a specified batch
@@ -79,7 +78,7 @@ public class Trainer extends Employee{
     public static void main(String[] args) {
         Trainer trainer = new Trainer(220001);
         System.out.println("<<Creating batch>>");
-        trainer.createBatch(500007,"02:50:00","03:30:00","Strength",100001,220001);
+        //trainer.createBatch("02:50:00","03:30:00","Strength",100001,220001);
         System.out.println(trainer.getBatch(500007));
         System.out.println();
         System.out.println("<<Rearranging batch>>");

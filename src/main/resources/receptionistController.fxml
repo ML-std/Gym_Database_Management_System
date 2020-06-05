@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="494.0" prefWidth="624.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Receptionist.receptionist">
+   <RadioButton fx:id="facilityRadioButton" layoutX="262.0" layoutY="79.0" mnemonicParsing="false" text="Facility ID">
+      <toggleGroup>
+         <ToggleGroup fx:id="averageRatingGroup" />
+      </toggleGroup>
+   </RadioButton>
+   <RadioButton fx:id="trainerRadioButton" layoutX="261.0" layoutY="44.0" mnemonicParsing="false" text="Trainer ID" toggleGroup="$averageRatingGroup" />
+      <Button fx:id="equipment" layoutX="15.0" layoutY="344.0" mnemonicParsing="false" onAction="#handleEquipmentButtonAction" prefHeight="71.0" prefWidth="131.0" text="Equipment Or Customer Report" textAlignment="CENTER" textOverrun="CLIP" wrapText="true" />
+      <Button fx:id="customer" layoutX="37.0" layoutY="183.0" mnemonicParsing="false" onAction="#handleCustomerButtonAction" prefHeight="46.0" prefWidth="88.0" text="Customer" />
+      <Button fx:id="backButton" layoutX="16.0" layoutY="447.0" mnemonicParsing="false" onAction="#handleBackButtonAction" text="Back" />
+      <Label fx:id="username" layoutX="8.0" layoutY="5.0" text="Label" />
+      <Button fx:id="customerInfoButton" layoutX="396.0" layoutY="111.0" mnemonicParsing="false" onAction="#handleCustomerInfoButtonAction" prefHeight="25.0" prefWidth="168.0" text="Customer Info" />
+      <Button fx:id="getCustomerReport" layoutX="389.0" layoutY="276.0" mnemonicParsing="false" onAction="#handleGetCustomerReportAction" prefHeight="25.0" prefWidth="168.0" text="Customer Report Info" />
+      <TableView fx:id="customerInfoTable" layoutX="182.0" layoutY="146.0" prefHeight="120.0" prefWidth="391.0">
+
+      </TableView>
+      <TableView fx:id="customerReportTable" layoutX="182.0" layoutY="319.0" prefHeight="120.0" prefWidth="391.0">
+
+      </TableView>
+      <TextField fx:id="customerIDInfo" layoutX="207.0" layoutY="111.0" promptText="Customer ID" />
+      <TextField fx:id="customerIDReport" layoutX="215.0" layoutY="276.0" promptText="Customer ID" />
+      <Label fx:id="averageLabel" layoutX="447.0" layoutY="66.0" text="Average Rating" textFill="#125423" />
+      <Button fx:id="averageRatingButton" layoutX="338.0" layoutY="62.0" mnemonicParsing="false" onAction="#handleAverageRatingButtonAction" text="Average Rating " />
+      <TextField fx:id="trainerOrFacilityID" layoutX="97.0" layoutY="62.0" promptText="Trainer or Facility ID" />
+
+</AnchorPane>

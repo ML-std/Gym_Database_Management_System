@@ -1,7 +1,7 @@
+package ServerSide;
 
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Arrays;
 import java.util.List;
 
 public class Receptionist extends Employee {
@@ -9,9 +9,10 @@ public class Receptionist extends Employee {
 
    DatabaseConnector connector;
    //constructor for receptionist
-    public Receptionist(String firstName, String middleName, String lastName, String address, String password, int SSN, int employeeID,int branchID,  String[] phoneNumber, int weeklySalary) {
-        super(firstName, middleName, lastName, address, password, SSN, employeeID,branchID, phoneNumber);
+    public Receptionist( int employeeID, String firstName, String middleName, String lastName, String address, String password, int branchID,int SSN, String[] phoneNumber, int weeklySalary) {
+        super(employeeID, firstName, middleName, lastName, address, password, branchID, SSN, phoneNumber);
         this.weeklySalary = weeklySalary;
+        connector = new DatabaseConnector();
     }
 
     //Creates temporary trainer object to access login system
@@ -23,8 +24,8 @@ public class Receptionist extends Employee {
 
     //Methods for modifying equipments
 
-    public boolean addEquipment(String name,String manufacturer, Condition condition, String type, int count, int branchID){
-        connector.insertDataToDatabase("equipment", new Object[]{"0",name, manufacturer, condition, type, count, branchID});
+    public boolean addEquipment(String name,String manufacturer, Condition condition, String type, int count){
+        connector.insertDataToDatabase("equipment", new Object[]{"0",name, manufacturer, condition, type, count, this.getBranchID()});
         int tmpEquipmentID = 0;
         List<Object> equipmentIDs = connector.getDatabaseRowList("EID","equipment");
         for (Object o: equipmentIDs) {
@@ -53,34 +54,48 @@ public class Receptionist extends Employee {
     }
 
     //Methods for modifying customers
-    public boolean addCustomer(Customer customer,String[] phoneNumbers){
-        Object[] o = new Object[]{customer.getCustomerID(), customer.getFirstName(), customer.getMiddleName(), customer.getLastName(), customer.getSex(),
-                customer.getAddress(), customer.getSSN(), customer.getBirthDate(), null};
-        boolean isAdded =  connector.insertDataToDatabase("customer", o);
+    public boolean addCustomer(Customer customer,String[] phoneNumbers) {
+        Object[] o = new Object[]{"0", customer.getFirstName(), customer.getMiddleName(), customer.getLastName(), customer.getSex(),
+                customer.getAddress(), customer.getSSN(), customer.getBirthDate()};
+        boolean isAdded = connector.insertDataToDatabase("customer", o);
         if (!isAdded) return false;
-        else
-        for (String phoneNumber : phoneNumbers) {
-          isAdded =   connector.insertDataToDatabase("cphone", new Object[]{phoneNumber, customer.getCustomerID()});
-        }
-        return isAdded;
-    }
+        else {
+            List<Object> objectList = connector.getDatabaseRowList("CID", "customer");
+            int newCustomerID = 0;
+            for (Object object : objectList) {
+                if ((int) object > newCustomerID) {
+                    newCustomerID = (int) object;
+                }
+            }
 
+            for (String phoneNumber : phoneNumbers) {
+                isAdded = connector.insertDataToDatabase("cphone", new Object[]{phoneNumber, newCustomerID});
+            }
+            return isAdded;
+        }
+    }
     public boolean setCustomerTrainer(int customerID, int employeeID){
-        return connector.setDataToDatabase("customer","Employee_ID", employeeID + " ", "Customer_ID = " + customerID);
+        return connector.setDataToDatabase("customer","Employee_ID", employeeID + " ", "CID = " + customerID);
     }
     public boolean setCustomerPhoneNumber(int customerID, String phoneNumber){
-        return connector.setDataToDatabase("cphone", "Phone",phoneNumber, "Customer_ID = " + customerID );
+        return connector.setDataToDatabase("cphone", "Phone",phoneNumber, "CID = " + customerID );
     }
 
     public boolean removeCustomer(int customerID){
-        return connector.removeDataFromDatabase("customer", "Customer_ID = " + customerID);
+        return connector.removeDataFromDatabase("customer", "CID = " + customerID);
     }
 
     public List<Object[]> getCustomers(){
-        return connector.getDatabaseTable("customer");
+        String tableName = "customer";
+        return connector.getDatabaseTable(tableName);
     }
-    public List<Object> getCustomerByID(int customerID){
-        return connector.getDatabaseItem("customer", "Customer = " + customerID);
+
+    public List<Object[]> getCustomerByID(int customerID){
+
+        if (connector.getDatabaseList("customer", "CID = " + customerID).isEmpty()){
+            return null;
+        }
+        return connector.getDatabaseList("customer", "CID = " + customerID);
     }
 
     //Methods for modifying customer reports
@@ -102,12 +117,9 @@ public class Receptionist extends Employee {
         return isAdded;
     }
 
-    public boolean setCustomerReport(){
-        return true;
-    }
 
-    public boolean removeCustomerReport(int customerID){
-        return connector.removeDataFromDatabase("customer","CID = " + customerID  );
+    public boolean removeCustomerReport(int reportID){
+        return connector.removeDataFromDatabase("customer_report","Report_ID = " + reportID  );
 
     }
 
@@ -123,9 +135,6 @@ public class Receptionist extends Employee {
         return connector.insertDataToDatabase("uses",new Object[]{facilityID, customerID});
     }
 
-    public boolean setCustomerToFacility(){
-        return true;
-    }
 
     public boolean removeCustomerFromFacility(int facilityID, int customerID){
         return connector.removeDataFromDatabase("uses", "Facility_ID = " +facilityID + "AND" + " CID = " + customerID );
@@ -168,7 +177,7 @@ public class Receptionist extends Employee {
     }
 
     public boolean addFacilityReview(int customerID,int facilityID, int rating){
-        return connector.insertDataToDatabase("facility_review",new Object[]{facilityID, customerID, rating});
+        return connector.insertDataToDatabase("facility_review",new Object[]{customerID,facilityID , rating});
     }
     public boolean setFacilityReview(int customerID,int facilityID, int rating){
         return connector.setDataToDatabase("facility_review", "Rating",rating + "","CID = " + customerID
@@ -208,7 +217,7 @@ public class Receptionist extends Employee {
     public static void main(String[] args) {
         Receptionist receptionist = new Receptionist(210001);
         System.out.println("<<Adding equipment>>");
-        receptionist.addEquipment("davai5","M",Condition.FAIR,"FEMALE",100,100001);
+//        receptionist.addEquipment("davai5","M",Condition.FAIR,"FEMALE",100,100001);
         System.out.println(receptionist.getEquipment("davai5"));
         receptionist.setEquipment(600025,Condition.BAD);
         receptionist.setEquipment(600025,150);
