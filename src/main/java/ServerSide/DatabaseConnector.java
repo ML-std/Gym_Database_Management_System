@@ -353,64 +353,9 @@ import java.util.*;
 
         protected String getDATABASE_NAME() {
             return DATABASE_NAME;
-        }
-
-        //Examples for if these works
-    public static void main(String[] args) {
-        DatabaseConnector databaseConnector = new DatabaseConnector();
-        System.out.println("<<Full Of Table Writing>>");
-        List<Object[]> o =   databaseConnector.getDatabaseTable("customer");
-        for (Object[] objects : o) {
-            System.out.println(Arrays.toString(objects));
-        }
-        System.out.println();
-        System.out.println("<<Getting Row List With Condition>>");
-        System.out.println();
-        ArrayList<Object> o2 = databaseConnector.getDatabaseRowList("Middle_Name", "customer","CID = 300002");
-        for (Object objects : o2) {
-            System.out.print(objects.toString() + " ");
-        }
-        System.out.println();
-        System.out.println();
-        System.out.println("<<Getting Row List Without Condition>>");
-        System.out.println();
-        ArrayList<Object> o3 = databaseConnector.getDatabaseRowList("CID", "customer");
-        for (Object objects : o3) {
-            System.out.print(objects.toString() + "  ");
-        }
-        System.out.println();
-        System.out.println();
-        System.out.println("<<Getting Database item With Condition>>");
-        System.out.println();
-        ArrayList<Object> o4 = databaseConnector.getDatabaseItem("customer", " CID = 300002 ");
-        for (Object value : o4) System.out.print(value.toString() + " ");
-        System.out.println();
-        System.out.println();
-        System.out.println("<<Inserting a data from database>>");
-        System.out.println();
-        databaseConnector.insertDataToDatabase("customer", new Object[]{"0","davai","M","GOOD","FEMALE","adress", 1010101010,"1965-08-08"});
-        o = databaseConnector.getDatabaseTable("customer");
-        for (Object[] objects : o) {
-            System.out.println(Arrays.toString(objects));
-        }
-        System.out.println();
-        System.out.println("<<Setting a data from database>>");
-        System.out.println();
-        databaseConnector.setDataToDatabase("customer","SEX","MALE"," First_Name = davai");
-        o = databaseConnector.getDatabaseTable("customer");
-        for (Object[] objects : o) {
-            System.out.println(Arrays.toString(objects));
-        }
-        System.out.println();
-        System.out.println("<<Removing a data from database>>");
-        System.out.println();
-       databaseConnector.removeDataFromDatabase("customer", " First_Name = davai");
-        o = databaseConnector.getDatabaseTable("customer");
-        for (Object[] objects : o) {
-            System.out.println(Arrays.toString(objects));
-        }
 
 
-    }}
+        }}
+
 
 

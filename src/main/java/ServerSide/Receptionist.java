@@ -214,25 +214,6 @@ public class Receptionist extends Employee {
         this.weeklySalary = weeklySalary;
     }
 
-    public static void main(String[] args) {
-        Receptionist receptionist = new Receptionist(210001);
-        System.out.println("<<Adding equipment>>");
-//        receptionist.addEquipment("davai5","M",Condition.FAIR,"FEMALE",100,100001);
-        System.out.println(receptionist.getEquipment("davai5"));
-        receptionist.setEquipment(600025,Condition.BAD);
-        receptionist.setEquipment(600025,150);
-        System.out.println("<<Setting equipment>>");
-        System.out.println(receptionist.getEquipment("davai5"));
-
-
-
-
-
-
-
-    }
-
-
 
 
 }

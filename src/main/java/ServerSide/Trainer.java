@@ -74,39 +74,5 @@ public class Trainer extends Employee{
     public void setHourlySalary(int hourlySalary) {
         this.hourlySalary = hourlySalary;
     }
-    //Test cases for trainer methods
-    public static void main(String[] args) {
-        Trainer trainer = new Trainer(220001);
-        System.out.println("<<Creating batch>>");
-        //trainer.createBatch("02:50:00","03:30:00","Strength",100001,220001);
-        System.out.println(trainer.getBatch(500007));
-        System.out.println();
-        System.out.println("<<Rearranging batch>>");
-        trainer.rearrangeBatch(500007,"02:20:00","03:20:00");
-        System.out.println(trainer.getBatch(500007));
-        System.out.println();
-        System.out.println("<<Deleting batch>>");
-        trainer.removeBatch(500007);
-        System.out.println(trainer.getBatch(500007));
-        System.out.println();
-        List<Object[]> batches = trainer.getBatchesTable();
-        for (Object[] o : batches) {
-            System.out.println(Arrays.toString(o));
-        }
-        System.out.println();
-        System.out.println();
-        System.out.println("<<Including customer to batch>>");
-        trainer.includeCustomer(300002,500003);
-        System.out.println(trainer.getAttendance(300002,true));
-        System.out.println();
-        System.out.println("<<Excluding customer from batch>>");
-        trainer.excludeCustomer(300002,500003);
-        System.out.println(trainer.getAttendance(300002,true));
-        List<Object[]> attendance = trainer.getAttendanceTable();
-        for ( Object[] o: attendance ) {
-            System.out.println(Arrays.toString(o));
-        }
-    }
-
 
   }

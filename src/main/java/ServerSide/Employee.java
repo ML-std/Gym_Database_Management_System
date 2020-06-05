@@ -3,11 +3,12 @@ package ServerSide;
 import java.sql.Connection;
 import java.util.ArrayList;
 
-public  class Employee  {
+public  class Employee {
     private String firstName, middleName, lastName, address, password;
     private int SSN, employeeID, branchID;
     private String[] phoneNumber;
     private DatabaseConnector connector;
+
     public static class stringBooleanClass {
         String aString;
         boolean aBoolean;
@@ -45,7 +46,7 @@ public  class Employee  {
     }
 
     //Constructor of Employee
-    public Employee(int employeeID,String firstName, String middleName, String lastName, String address,String password, int branchID,  int SSN, String[] phoneNumber ) {
+    public Employee(int employeeID, String firstName, String middleName, String lastName, String address, String password, int branchID, int SSN, String[] phoneNumber) {
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
@@ -59,7 +60,7 @@ public  class Employee  {
     }
 
     //Since this is an auto-incremented employee ID, it is not required in constructor
-    public Employee(String firstName, String middleName, String lastName, String address,String password, int branchID,  int SSN ) {
+    public Employee(String firstName, String middleName, String lastName, String address, String password, int branchID, int SSN) {
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
@@ -71,82 +72,82 @@ public  class Employee  {
     }
 
     //Creates Temporary employee object to access login system
-    public Employee(int employeeID){
+    public Employee(int employeeID) {
         this.employeeID = employeeID;
         connector = new DatabaseConnector();
     }
 
     //Method that logs in the user and specifies their role in the app
-    public stringBooleanClass employeeLogin(int employeeID, String password){
+    public stringBooleanClass employeeLogin(int employeeID, String password) {
         //If employeeID is correct continue, else return false
         boolean isEmployeeID = false;
-        ArrayList<Object> employeeList = connector.getDatabaseRowList("Employee_ID","employee");
-        for (Object o: employeeList) {
-            if (Integer.parseInt(o.toString()) == employeeID){
+        ArrayList<Object> employeeList = connector.getDatabaseRowList("Employee_ID", "employee");
+        for (Object o : employeeList) {
+            if (Integer.parseInt(o.toString()) == employeeID) {
                 isEmployeeID = true;
                 break;
             }
         }
 
         //If password is correct continue, else return false
-        if (isEmployeeID){
-       ArrayList<Object> passwordItem = connector.getDatabaseRowList("Password", "employee","Employee_ID = " + employeeID);
-        if (password.equals(passwordItem.get(0).toString())){
-            Employee employeeThatLoggedIn = null;
-            String employeeDataShow = "";
-            ArrayList<Object> employeeData = connector.getDatabaseItem( "employee","Employee_ID = " + employeeID);
-            ArrayList<Object> managerIDs = connector.getDatabaseRowList("Employee_ID","manager");
-            boolean hasPlace = false;
+        if (isEmployeeID) {
+            ArrayList<Object> passwordItem = connector.getDatabaseRowList("Password", "employee", "Employee_ID = " + employeeID);
+            if (password.equals(passwordItem.get(0).toString())) {
+                Employee employeeThatLoggedIn = null;
+                String employeeDataShow = "";
+                ArrayList<Object> employeeData = connector.getDatabaseItem("employee", "Employee_ID = " + employeeID);
+                ArrayList<Object> managerIDs = connector.getDatabaseRowList("Employee_ID", "manager");
+                boolean hasPlace = false;
 
-            // specify the users role in the application
+                // specify the users role in the application
 
-            for (Object managerID : managerIDs) {
-                int tmp = Integer.parseInt(managerID.toString());
-                if (employeeID == tmp) {
-                    employeeThatLoggedIn = new Manager(Integer.parseInt(employeeData.get(0).toString()),employeeData.get(1).toString(), employeeData.get(2).toString(),
-                            employeeData.get(3).toString(),employeeData.get(4).toString(),employeeData.get(5).toString(),
-                            Integer.parseInt(employeeData.get(6).toString()),Integer.parseInt(employeeData.get(7).toString()),new String[]{""},0);
-                    hasPlace = true;
-                    employeeDataShow = "Logged as Manager, ";
-                    break;
+                for (Object managerID : managerIDs) {
+                    int tmp = Integer.parseInt(managerID.toString());
+                    if (employeeID == tmp) {
+                        employeeThatLoggedIn = new Manager(Integer.parseInt(employeeData.get(0).toString()), employeeData.get(1).toString(), employeeData.get(2).toString(),
+                                employeeData.get(3).toString(), employeeData.get(4).toString(), employeeData.get(5).toString(),
+                                Integer.parseInt(employeeData.get(6).toString()), Integer.parseInt(employeeData.get(7).toString()), new String[]{""}, 0);
+                        hasPlace = true;
+                        employeeDataShow = "Logged as Manager, ";
+                        break;
+                    }
                 }
-            }
 
-            ArrayList<Object> receptionistIDs = connector.getDatabaseRowList("Employee_ID","receptionist");
-            if (!hasPlace){
-            for (Object receptionistID : receptionistIDs) {
-                int tmp = Integer.parseInt(receptionistID.toString());
-                if (employeeID == tmp) {
-                    employeeThatLoggedIn = new Receptionist(Integer.parseInt(employeeData.get(0).toString()),employeeData.get(1).toString(), employeeData.get(2).toString(),
-                            employeeData.get(3).toString(),employeeData.get(4).toString(),employeeData.get(5).toString(),
-                            Integer.parseInt(employeeData.get(6).toString()),Integer.parseInt(employeeData.get(7).toString()),new String[]{""},0);
-                    employeeDataShow = "Logged as Receptionist, ";
-                    hasPlace =true;
+                ArrayList<Object> receptionistIDs = connector.getDatabaseRowList("Employee_ID", "receptionist");
+                if (!hasPlace) {
+                    for (Object receptionistID : receptionistIDs) {
+                        int tmp = Integer.parseInt(receptionistID.toString());
+                        if (employeeID == tmp) {
+                            employeeThatLoggedIn = new Receptionist(Integer.parseInt(employeeData.get(0).toString()), employeeData.get(1).toString(), employeeData.get(2).toString(),
+                                    employeeData.get(3).toString(), employeeData.get(4).toString(), employeeData.get(5).toString(),
+                                    Integer.parseInt(employeeData.get(6).toString()), Integer.parseInt(employeeData.get(7).toString()), new String[]{""}, 0);
+                            employeeDataShow = "Logged as Receptionist, ";
+                            hasPlace = true;
 
-                    break;
+                            break;
+                        }
+                    }
                 }
-            }}
-            if (!hasPlace){
-            ArrayList<Object> trainerIDs = connector.getDatabaseRowList("Employee_ID","trainer");
-            for (Object trainerID : trainerIDs) {
-                int tmp = Integer.parseInt(trainerID.toString());
-                if (employeeID == tmp) {
-                    employeeThatLoggedIn = new Trainer(Integer.parseInt(employeeData.get(0).toString()),employeeData.get(1).toString(), employeeData.get(2).toString(),
-                            employeeData.get(3).toString(),employeeData.get(4).toString(),employeeData.get(5).toString(),
-                            Integer.parseInt(employeeData.get(6).toString()),Integer.parseInt(employeeData.get(7).toString()),new String[]{""},0);
-                    employeeDataShow = "Logged as Trainer, ";
-                    hasPlace = true;
-                    break;
+                if (!hasPlace) {
+                    ArrayList<Object> trainerIDs = connector.getDatabaseRowList("Employee_ID", "trainer");
+                    for (Object trainerID : trainerIDs) {
+                        int tmp = Integer.parseInt(trainerID.toString());
+                        if (employeeID == tmp) {
+                            employeeThatLoggedIn = new Trainer(Integer.parseInt(employeeData.get(0).toString()), employeeData.get(1).toString(), employeeData.get(2).toString(),
+                                    employeeData.get(3).toString(), employeeData.get(4).toString(), employeeData.get(5).toString(),
+                                    Integer.parseInt(employeeData.get(6).toString()), Integer.parseInt(employeeData.get(7).toString()), new String[]{""}, 0);
+                            employeeDataShow = "Logged as Trainer, ";
+                            hasPlace = true;
+                            break;
+                        }
+                    }
                 }
-            }}
-            employeeDataShow = employeeDataShow + "Welcome " + employeeData.get(1).toString() + " " +
-                    employeeData.get(2).toString() + " " + employeeData.get(3).toString();
-            return new stringBooleanClass(employeeDataShow, hasPlace, employeeThatLoggedIn);
-        }
-        else
-            return new stringBooleanClass("Invalid Password", false, null);
-    }
-        else
+                employeeDataShow = employeeDataShow + "Welcome " + employeeData.get(1).toString() + " " +
+                        employeeData.get(2).toString() + " " + employeeData.get(3).toString();
+                return new stringBooleanClass(employeeDataShow, hasPlace, employeeThatLoggedIn);
+            } else
+                return new stringBooleanClass("Invalid Password", false, null);
+        } else
             return new stringBooleanClass("Invalid Employee ID", false, null);
     }
 
@@ -207,6 +208,7 @@ public  class Employee  {
     public void setEmployeeID(int employeeID) {
         this.employeeID = employeeID;
     }
+
     public int getBranchID() {
         return branchID;
     }
@@ -222,25 +224,9 @@ public  class Employee  {
     public void setPhoneNumber(String[] phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-    public Connection getConnector(){
+
+    public Connection getConnector() {
         return connector.conn;
     }
 
-    //Testing for Employee Class
-    public static void main(String[] args) {
-        //Test for Login Method in working cases
-        Employee manager = new Employee(200001);
-        System.out.println(manager.employeeLogin(manager.employeeID, 240698 +""));
-        Employee receptionist = new Employee(210001);
-        System.out.println(receptionist.employeeLogin(receptionist.employeeID, "" + 249987));
-        Employee trainer = new Employee(220001);
-        System.out.println(trainer.employeeLogin(trainer.employeeID,"" + 220011));
-        //Test for Invalid ID and invalid password
-        Employee invalidID = new Employee(1519894);
-        System.out.println(invalidID.employeeLogin(invalidID.employeeID,"klmpokmp"));
-        Employee invalidPwd = new Employee(220001);
-        System.out.println(invalidPwd.employeeLogin(invalidPwd.employeeID, "5486496"));
-
-    }
 }
-
