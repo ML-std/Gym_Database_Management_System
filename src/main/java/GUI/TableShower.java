@@ -134,6 +134,7 @@ public class TableShower {
         stage.setScene(scene);
         stage.setWidth(900);
         stage.setHeight(600);
+        stage.setTitle("Table");
         stage.show();
     }
     public static void showTable(ArrayList<Object> objects, String tableName){

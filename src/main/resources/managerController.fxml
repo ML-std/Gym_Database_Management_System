@@ -7,7 +7,7 @@
     <Button fx:id="backButton" layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onAction="#handleBackButtonAction" text="Back" />
    <Button fx:id="employTrainerButton" layoutX="456.0" layoutY="361.0" mnemonicParsing="false" onAction="#handleEmployTrainerButtonAction" text="Employee Settings" />
     <Button layoutX="49.0" layoutY="140.0" mnemonicParsing="false" onAction="#handleTableShowAction" prefHeight="44.0" prefWidth="121.0" text="Show Table" />
-   <Label layoutX="52.0" layoutY="65.0" prefHeight="25.0" prefWidth="114.0" text="Put a table name" />
+   <Label layoutX="52.0" layoutY="65.0" prefHeight="25.0" prefWidth="114.0" text="Select a table name" />
    <Label fx:id="username" layoutX="21.0" layoutY="14.0" text="Label" />
    <Label layoutX="395.0" layoutY="15.0" prefHeight="33.0" prefWidth="157.0" text="Get Employee Information" />
    <TextField fx:id="name" layoutX="399.0" layoutY="78.0" promptText="name" />
