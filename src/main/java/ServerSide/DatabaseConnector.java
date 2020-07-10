@@ -2,11 +2,10 @@ package ServerSide;
 import java.sql.*;
 import java.util.*;
 
-    public class DatabaseConnector {
+     class DatabaseConnector {
         private final String DATABASE_NAME = "`gym_management_database_system`.";
     Connection conn;
-    public static ResultSet rs;
-
+    
     //Database Connector constructor that connects the database
     protected DatabaseConnector(){
         try{

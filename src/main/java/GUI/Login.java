@@ -33,6 +33,7 @@ public class Login implements Initializable {
 
     @Override
     public void initialize(final URL url, final ResourceBundle rb) {
+
         System.out.println(id.getText().equals(""));
     }
 

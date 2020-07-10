@@ -97,8 +97,8 @@ public class TrainerBatches implements Initializable {
         textFields.add(endTimeRearrange);
 
         if (!Rules.hasAnEmptyInput(textFields)){
-            String[] times = startTime.getText().split(":");
-            String[] endTimes = endTime.getText().split(":");
+            String[] times = startTimeRearrange.getText().split(":");
+            String[] endTimes = endTimeRearrange.getText().split(":");
             String tmpStartTime = times[0] + times[1] + times[2] ;
             String tmpEndTime = endTimes[0] + endTimes[1] + endTimes[2];
         boolean isRearranged = ((ServerSide.Trainer) loggedEmployee).rearrangeBatch(Integer.parseInt(batchIDRearrange.getText()),tmpStartTime, tmpEndTime);
