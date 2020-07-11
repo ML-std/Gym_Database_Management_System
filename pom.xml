@@ -55,6 +55,7 @@
                     </descriptorRefs>
                     <appendAssemblyId>false</appendAssemblyId>
                     <finalName>Gym Management</finalName>
+
                 </configuration>
             </plugin>
         </plugins>
