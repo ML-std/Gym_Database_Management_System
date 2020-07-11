@@ -6,18 +6,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.net.URL;
-import java.nio.file.Path;
 import java.util.Objects;
 
-public class Main extends Application {
+public class Launcher extends Application {
     public static void main(String[] args) {
-        Application.launch(Main.class, args);
+        Application.launch(Launcher.class, args);
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage){
         try {
 
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("loginController.fxml")));
